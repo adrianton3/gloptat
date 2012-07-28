@@ -117,7 +117,7 @@ public class Displayer
   pointerstatus = ipa;
  }
 //------------------------------------------------------------------------------
- private void callSurface()
+ private void surface()
  {
   GL11.glLoadIdentity();
   
@@ -131,39 +131,19 @@ public class Displayer
   
   Surface.call();
  }
- 
- public void suprafata()
- {
-  callSurface();
- }
 //------------------------------------------------------------------------------
- private void box() //convert to display list
+ private void box()
  {
   float spx = -rezx/2f;
   float spy = -rezy/2f;
   float epx = spx+rezx;
   float epy = spy+rezy;
 
-  GL11.glColor3f(1f, 1f, 1f);
-  GL11.glLineWidth(2);
-  GL11.glBegin(GL11.GL_LINES);
-  
-  GL11.glVertex3d(spx, spy, maxc); GL11.glVertex3d(epx, spy, maxc);
-  GL11.glVertex3d(epx, spy, maxc); GL11.glVertex3d(epx, epy, maxc);
-  GL11.glVertex3d(epx, epy, maxc); GL11.glVertex3d(spx, epy, maxc);
-  GL11.glVertex3d(spx, epy, maxc); GL11.glVertex3d(spx, spy, maxc);
-  
-  GL11.glVertex3d(spx, spy, minc); GL11.glVertex3d(epx, spy, minc);
-  GL11.glVertex3d(epx, spy, minc); GL11.glVertex3d(epx, epy, minc);
-  GL11.glVertex3d(epx, epy, minc); GL11.glVertex3d(spx, epy, minc);
-  GL11.glVertex3d(spx, epy, minc); GL11.glVertex3d(spx, spy, minc);
-  
-  GL11.glVertex3d(spx, spy, minc); GL11.glVertex3d(spx, spy, maxc);
-  GL11.glVertex3d(epx, spy, minc); GL11.glVertex3d(epx, spy, maxc);
-  GL11.glVertex3d(epx, epy, minc); GL11.glVertex3d(epx, epy, maxc);
-  GL11.glVertex3d(spx, epy, minc); GL11.glVertex3d(spx, epy, maxc);
-  
-  GL11.glEnd();
+  GL11.glPushMatrix();
+  GL11.glTranslatef(0, 0, (float)(minc+(maxc-minc)/2));
+  GL11.glScalef(rezx/2f, rezy/2f, (float)(maxc-minc)/2f);
+  Box.call();
+  GL11.glPopMatrix();
  }
 //------------------------------------------------------------------------------
  private void pointers()
@@ -309,6 +289,7 @@ public class Displayer
   Dbo.out("Exiting...");
   Surface.release();
   Pointer.release();
+  Box.release();
   //releaseSurface(dlhandle);
   Display.destroy();
   System.exit(0);
@@ -316,7 +297,7 @@ public class Displayer
  
  private void render()
  {
-  suprafata();
+  surface();
   pointers();
   //axe();
   box();
@@ -384,5 +365,6 @@ public class Displayer
   initGL();
   Surface.assemble(this);
   Pointer.assemble();
+  Box.assemble();
  }
 }
