@@ -25,13 +25,13 @@ import java.util.Timer;
 
 import alg.OA;
 
-import def.Main;
+import def.MainVis;
 
 class ActConf implements ActionListener
 {
- Main outer;
+ MainVis outer;
  
- ActConf(Main outer)
+ ActConf(MainVis outer)
  {
   this.outer = outer;
  }

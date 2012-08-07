@@ -25,13 +25,13 @@ import java.util.Timer;
 
 import alg.OA;
 
-import def.Main;
+import def.MainVis;
 
 class ActStep implements ActionListener
 {
- Main outer;
+ MainVis outer;
  
- ActStep(Main outer)
+ ActStep(MainVis outer)
  {
   this.outer = outer;
  }

@@ -25,13 +25,13 @@ import java.util.Timer;
 
 import alg.OA;
 
-import def.Main;
+import def.MainVis;
 
 class ActInit implements ActionListener
 {
- Main outer;
+ MainVis outer;
  
- ActInit(Main outer)
+ ActInit(MainVis outer)
  {
   this.outer = outer;
  }

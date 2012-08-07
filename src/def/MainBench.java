@@ -20,14 +20,11 @@
 package def;
 
 import gui.ConfigGUI;
-import gui.MainGUI;
 import gui.OutputGUI;
 
 import java.util.HashMap;
 
 import objfun.MOF;
-import plotter.Displayer;
-import plotter.DisplayerThread;
 import alg.ConfString;
 import alg.OA;
 import alg.OAParams;
@@ -36,15 +33,10 @@ import alg.ga.GAParams;
 import alg.pso.PSO;
 import alg.pso.PSOParams;
 
-public class Main 
-{
+public class MainBench {
  //GUI
- public MainGUI se;
  public OutputGUI con;
  public ConfigGUI[] conf;
- 
- //Plotter
- public Displayer d;
  
  //Objective function
  public MOF of;
@@ -60,33 +52,6 @@ public class Main
  public OA activeOA;
  public OAParams activeOAParams;
  public ConfigGUI activeConf;
- 
- void setupDisplayer()
- {
-  d = new Displayer();
-  
-  int tmprx, tmpry;
-  double dx, dy;
-
-  dx = dom[0][1]-dom[0][0];
-  dy = dom[1][1]-dom[1][0];
-
-  if(dx < dy)
-  {
-   tmprx = 120;
-   tmpry = (int)(tmprx * (dy/dx));
-  }
-  else
-  {
-   tmpry = 120;
-   tmprx = (int)(tmpry * (dx/dy));
-  }
-  
-  d.setDom(dom);
-  d.setVal(of.compute(tmprx,tmpry));
-  d.minc = of.minc;
-  d.maxc = of.maxc;
- }
  
  void setupOF()
  {
@@ -105,7 +70,7 @@ public class Main
   
   //oa[0].init();
   
-  conf[0] = new ConfigGUI(this,"Config GA","");
+  conf[0] = new ConfigGUI("Config GA","");
  }
  
  void setupPSO()
@@ -118,7 +83,7 @@ public class Main
   
   //oa[1].init();
   
-  conf[1] = new ConfigGUI(this,"Config PSO","");
+  conf[1] = new ConfigGUI("Config PSO","");
  }
  
  public void changeOF(int id)
@@ -131,10 +96,10 @@ public class Main
   
   int tmprx, tmpry;
   double dx, dy;
-
+  
   dx = dom[0][1]-dom[0][0];
   dy = dom[1][1]-dom[1][0];
-
+  
   if(dx < dy)
   {
    tmprx = 120;
@@ -145,20 +110,11 @@ public class Main
    tmpry = 120;
    tmprx = (int)(tmpry * (dx/dy));
   }
-  
-  d.setDom(dom);
-  d.setVal(of.compute(tmprx,tmpry));
-  d.minc = of.minc;
-  d.maxc = of.maxc;
-  
-  d.needsrepaint = true;
  }
  
  void start()
  {
-  se = new MainGUI(this);
-
-  con = new OutputGUI(this);
+  con = new OutputGUI();
   
   setupOF();
   
@@ -172,32 +128,28 @@ public class Main
   activeOA = oa[0];
   activeOAParams = oaparams[0];
   activeConf = conf[0];
-  
-  setupDisplayer();
-  
-  new Thread(new DisplayerThread(d)).start();
  }
-
+ 
  public OAParams getOAParams() 
  {
   HashMap<String,Double> map;
   map = new ConfString(activeConf.getString()).toMap();
   
   /*
-  Class[] c = {GAParams.class,PSOParams.class};
-  try {
-   return (OAParams) c[0].getMethod("fromMap").invoke(new Object[] {});
-  } catch (IllegalArgumentException e) {
-   e.printStackTrace();
-  } catch (SecurityException e) {
-   e.printStackTrace();
-  } catch (IllegalAccessException e) {
-   e.printStackTrace();
-  } catch (InvocationTargetException e) {
-   e.printStackTrace();
-  } catch (NoSuchMethodException e) {
-   e.printStackTrace();
-  } */
+    Class[] c = {GAParams.class,PSOParams.class};
+    try {
+     return (OAParams) c[0].getMethod("fromMap").invoke(new Object[] {});
+    } catch (IllegalArgumentException e) {
+     e.printStackTrace();
+    } catch (SecurityException e) {
+     e.printStackTrace();
+    } catch (IllegalAccessException e) {
+     e.printStackTrace();
+    } catch (InvocationTargetException e) {
+     e.printStackTrace();
+    } catch (NoSuchMethodException e) {
+     e.printStackTrace();
+    } */
   
   //must find a better way of doing this
   if(activeOA instanceof GA) return GAParams.fromMap(map);
@@ -205,10 +157,9 @@ public class Main
   
   return null;
  }
- 
- public static void main(String[] args) 
- {
-  Main instance = new Main();
+    
+ public static void main(String[] args) {
+  MainBench instance = new MainBench();
   instance.start();
  }
 }

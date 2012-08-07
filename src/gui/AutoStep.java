@@ -25,7 +25,7 @@ import alg.OA;
 
 import plotter.Displayer;
 
-import def.Main;
+import def.MainVis;
 
 public class AutoStep extends TimerTask
 {

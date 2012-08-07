@@ -24,13 +24,13 @@ import java.awt.event.ActionListener;
 import java.util.Timer;
 
 import def.Dbo;
-import def.Main;
+import def.MainVis;
 
 class ActFun implements ActionListener
 {
- Main outer;
+ MainVis outer;
  
- ActFun(Main outer)
+ ActFun(MainVis outer)
  {
   this.outer = outer;
  }

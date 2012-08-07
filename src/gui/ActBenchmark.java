@@ -26,14 +26,14 @@ import java.util.Timer;
 import alg.OA;
 
 import def.Fasten;
-import def.Main;
+import def.MainVis;
 
 class ActBenchmark implements ActionListener
 {
- Main outer;
+ MainVis outer;
  final int ntrials = 20;
  
- ActBenchmark(Main outer)
+ ActBenchmark(MainVis outer)
  {
   this.outer = outer;
  }

@@ -31,13 +31,13 @@ import alg.pso.PSOParams;
 
 import def.Dbo;
 import def.Fasten;
-import def.Main;
+import def.MainVis;
 
 class ActRun implements ActionListener
 {
- Main outer;
+ MainVis outer;
  
- ActRun(Main outer)
+ ActRun(MainVis outer)
  {
   this.outer = outer;
  }

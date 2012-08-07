@@ -3,13 +3,13 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import def.Main;
+import def.MainVis;
 
 public class ActPlot implements ActionListener 
 {
- Main outer;
+ MainVis outer;
  
- ActPlot(Main outer)
+ ActPlot(MainVis outer)
  {
   this.outer = outer;
  }

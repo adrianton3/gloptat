@@ -26,16 +26,16 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
 
-import def.Main;
+import def.MainVis;
 
 public class MainGUI implements Runnable 
 {
- Main outer;
+ MainVis outer;
  JFrame frame;
  JComboBox cmb_fun, cmb_oa;
  JButton but_config, but_init, but_step, but_run, but_benchmark, but_plot;
  
- public MainGUI(Main outer)
+ public MainGUI(MainVis outer)
  {
   this.outer = outer;
   SwingUtilities.invokeLater(this);

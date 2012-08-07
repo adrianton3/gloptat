@@ -28,18 +28,16 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import def.Main;
+import def.MainVis;
 
 public class OutputGUI implements Runnable 
 {
- Main outer;
  JFrame frame;
  JTextArea out_out;
  JScrollPane scroll_pane;
  
- public OutputGUI(Main outer)
+ public OutputGUI()
  {
-  this.outer = outer;
   SwingUtilities.invokeLater(this);
  }
  

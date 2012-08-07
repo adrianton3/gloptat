@@ -28,20 +28,18 @@ import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.SwingUtilities;
 
-import def.Main;
+import def.MainVis;
 
 public class ConfigGUI implements Runnable 
 {
- Main outer;
  String title;
  String deftext;
  JFrame frame;
  JScrollPane scroll_pane;
  JTextArea inp_conf;
  
- public ConfigGUI(Main outer, String title, String deftext)
+ public ConfigGUI(String title, String deftext)
  {
-  this.outer = outer;
   this.title = title;
   this.deftext = deftext;
   SwingUtilities.invokeLater(this);
