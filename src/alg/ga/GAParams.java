@@ -35,21 +35,21 @@ public class GAParams implements OAParams
  public double target = 1000;
  
  public int niv = 30;
- public int popmin = 10;
- public int ndrop = 0;
- public int nnew = 0;
- public int ninvert = 0;
- public int selection_type = 0;
- public double selection_pressure = 0.5;
- public int dampening_type = 0;
- public int crossover_type = 0;
- public double crossover_bias = 0.5;
- public int mutation_type = 0;
- public double mutation_chance = 0.01;
- public double mutation_lat = 2;
- public double mutation_start = 20;
- public double mutation_inc = -1;
- public boolean grow = false;
+ public int popmin = 10; //final
+ public int ndrop = 0;   //final
+ public int nnew = 0;    //final
+ public int ninvert = 0; //final
+ public int selection_type = 0;          //final
+ public double selection_pressure = 0.5; //final
+ public int dampening_type = 0;          //final
+ public int crossover_type = 0;          //final
+ public double crossover_bias = 0.5;     //final
+ public int mutation_type = 0;           //final
+ public double mutation_chance = 0.01;   //final
+ public double mutation_lat = 2;         //final
+ public double mutation_start = 20;      //final
+ public double mutation_inc = -1;        //final
+ public boolean grow = false;            //final
 //------------------------------------------------------------------------------
  public String toString()
  {

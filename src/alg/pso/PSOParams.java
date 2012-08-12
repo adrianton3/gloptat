@@ -31,16 +31,16 @@ public class PSOParams implements OAParams
  public double target = 1000;
  
  public int np = 20;
- public int popmin = 10;
- public int ndrop = 0;
- public int nnew = 0;
- public double atenuator = 0.7;
- public double social = 0.7;
- public double personal = 0.4;
- public double random = 0.1;
- public double speedmax = 10;
- public int network_type = 4;
- public int network_param = 5;
+ public int popmin = 10; //final
+ public int ndrop = 0;   //final
+ public int nnew = 0;    //final
+ public double atenuator = 0.7; //final
+ public double social = 0.7;    //final
+ public double personal = 0.4;  //final
+ public double random = 0.1;    //final
+ public double speedmax = 10;   //final
+ public int network_type = 4;   //final
+ public int network_param = 5;  //final
 //------------------------------------------------------------------------------
  @Override
  public String toString()
