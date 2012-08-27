@@ -28,14 +28,13 @@ import javax.swing.SwingUtilities;
 
 import def.MainVis;
 
-public class MainGUI implements Runnable 
-{
+public class MainVisGUI implements Runnable, MainGenericGUI {
  MainVis outer;
  JFrame frame;
  JComboBox cmb_fun, cmb_oa;
  JButton but_config, but_init, but_step, but_run, but_benchmark, but_plot;
  
- public MainGUI(MainVis outer)
+ public MainVisGUI(MainVis outer)
  {
   this.outer = outer;
   SwingUtilities.invokeLater(this);
@@ -47,12 +46,12 @@ public class MainGUI implements Runnable
   GridLayout experimentLayout = new GridLayout(8,1,4,4);
   frame.setLayout(experimentLayout);
   
-  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing sequence
+  frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); //closing sequence //should close the display properly
   
   String[] funNam = {"DeJong","Rastrigin","Michalewicz"};
   cmb_fun = new JComboBox(funNam);
   
-  String[] oaNam = {"GA","PSO","Random"};
+  String[] oaNam = {"GA","PSO"};
   cmb_oa = new JComboBox(oaNam);
   
   but_config = new JButton("Config");
@@ -86,8 +85,15 @@ public class MainGUI implements Runnable
   frame.setVisible(true);
  }
  
- public void run() 
- {
+ public void run() {
   assembleGUI();
+ }
+ 
+ public int getSelectedOAIndex() {
+	return cmb_oa.getSelectedIndex();
+ }
+
+ public int getSelectedFunIndex() {
+	return cmb_fun.getSelectedIndex();
  }
 }

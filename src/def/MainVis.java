@@ -20,7 +20,7 @@
 package def;
 
 import gui.ConfigGUI;
-import gui.MainGUI;
+import gui.MainVisGUI;
 import gui.OutputGUI;
 
 import java.util.HashMap;
@@ -36,33 +36,32 @@ import alg.ga.GAParams;
 import alg.pso.PSO;
 import alg.pso.PSOParams;
 
-public class MainVis 
-{
+public class MainVis extends MainGeneric {
  //GUI
- public MainGUI se;
- public OutputGUI con;
- public ConfigGUI[] conf;
+ //public MainVisGUI se;
+ //public OutputGUI con;
+ //public ConfigGUI[] conf;
  
  //Plotter
  public Displayer d;
  
  //Objective function
- public MOF of;
+ //public MOF of;
+ 
  
  //Optimization algorithms 
- public OA[] oa;
- public OAParams[] oaparams;
+ //public OA[] oa;
+ //public OAParams[] oaparams;
  
  //Search space
  double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
  
  //...
- public OA activeOA;
- public OAParams activeOAParams;
- public ConfigGUI activeConf;
+ //public OA activeOA;
+ //public OAParams activeOAParams;
+ //public ConfigGUI activeConf;
  
- void setupDisplayer()
- {
+ void setupDisplayer() {
   d = new Displayer();
   
   int tmprx, tmpry;
@@ -156,7 +155,7 @@ public class MainVis
  
  void start()
  {
-  se = new MainGUI(this);
+  se = new MainVisGUI(this);
 
   con = new OutputGUI();
   

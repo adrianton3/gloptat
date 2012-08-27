@@ -26,32 +26,29 @@ import java.util.HashMap;
 
 import objfun.MOF;
 import alg.ConfString;
-import alg.OA;
 import alg.OAParams;
-import alg.ga.GA;
 import alg.ga.GAParams;
-import alg.pso.PSO;
 import alg.pso.PSOParams;
 
-public class MainBench {
+public class MainBench extends MainGeneric {
  //GUI
- public OutputGUI con;
- public ConfigGUI[] conf;
+ //public OutputGUI con;
+ //public ConfigGUI[] conf;
  
  //Objective function
- public MOF of;
+ //public MOF of;
  
  //Optimization algorithms 
- public OA[] oa;
- public OAParams[] oaparams;
+ //public OAParams[] oaparams;
  
  //Search space
  double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
  
  //...
- public OA activeOA;
- public OAParams activeOAParams;
- public ConfigGUI activeConf;
+ //public OAParams activeOAParams;
+ //public ConfigGUI activeConf;
+ 
+ String oanam = "GA";
  
  void setupOF()
  {
@@ -60,28 +57,16 @@ public class MainBench {
   of.setDom(dom[0][0],dom[0][1],dom[1][0],dom[1][1]); //not ok
  }
  
- void setupGA()
+ void setupGA() //no need
  {
   oaparams[0] = new GAParams();
-  
-  oa[0] = new GA(of);
-  oa[0].setDom(dom);
-  oa[0].setParams(oaparams[0]);
-  
-  //oa[0].init();
   
   conf[0] = new ConfigGUI("Config GA","");
  }
  
- void setupPSO()
+ void setupPSO() //no need
  {
   oaparams[1] = new PSOParams();
-  
-  oa[1] = new PSO(of);
-  oa[1].setDom(dom);
-  oa[1].setParams(oaparams[1]);
-  
-  //oa[1].init();
   
   conf[1] = new ConfigGUI("Config PSO","");
  }
@@ -93,23 +78,6 @@ public class MainBench {
   dom[0][1] = of.getFunc().pedomx;
   dom[1][0] = of.getFunc().psdomy;
   dom[1][1] = of.getFunc().pedomy;
-  
-  int tmprx, tmpry;
-  double dx, dy;
-  
-  dx = dom[0][1]-dom[0][0];
-  dy = dom[1][1]-dom[1][0];
-  
-  if(dx < dy)
-  {
-   tmprx = 120;
-   tmpry = (int)(tmprx * (dy/dx));
-  }
-  else
-  {
-   tmpry = 120;
-   tmprx = (int)(tmpry * (dx/dy));
-  }
  }
  
  void start()
@@ -118,14 +86,12 @@ public class MainBench {
   
   setupOF();
   
-  oa = new OA[2];
   oaparams = new OAParams[2];
   conf = new ConfigGUI[2];
   
   setupGA();
   setupPSO();
   
-  activeOA = oa[0];
   activeOAParams = oaparams[0];
   activeConf = conf[0];
  }
@@ -134,6 +100,7 @@ public class MainBench {
  {
   HashMap<String,Double> map;
   map = new ConfString(activeConf.getString()).toMap();
+  return OAFactory.getParams(oanam, map);
   
   /*
     Class[] c = {GAParams.class,PSOParams.class};
@@ -152,10 +119,6 @@ public class MainBench {
     } */
   
   //must find a better way of doing this
-  if(activeOA instanceof GA) return GAParams.fromMap(map);
-  else if(activeOA instanceof PSO) return PSOParams.fromMap(map);
-  
-  return null;
  }
     
  public static void main(String[] args) {

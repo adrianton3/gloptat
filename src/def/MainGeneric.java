@@ -19,20 +19,28 @@
 
 package def;
 
-public class Dbo {
- public static boolean on = true;
- static long lasttime = System.nanoTime();
+import gui.ConfigGUI;
+import gui.MainGenericGUI;
+import gui.OutputGUI;
+import objfun.MOF;
+import alg.OA;
+import alg.OAParams;
 
- public static void out(String istr) {
-  //if(on)
-   System.out.println(istr);
- }
-
- public static void start() {
-  lasttime = System.nanoTime();
- }
-
- public static long elapsed() {
-  return System.nanoTime() - lasttime;
- }
+public abstract class MainGeneric {
+  //GUI
+	public MainGenericGUI se;
+	public OutputGUI con;
+	public ConfigGUI[] conf; 
+	public ConfigGUI activeConf;
+	
+	//Objective function
+	public MOF of;
+	
+	//Optimization algorithms
+	public OA[] oa;
+	public OAParams[] oaparams;
+	public OA activeOA;
+	public OAParams activeOAParams;
+	
+	public abstract void changeOF(int tmp);
 }

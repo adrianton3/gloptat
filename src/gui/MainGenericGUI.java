@@ -17,22 +17,10 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package def;
 
-public class Dbo {
- public static boolean on = true;
- static long lasttime = System.nanoTime();
+package gui;
 
- public static void out(String istr) {
-  //if(on)
-   System.out.println(istr);
- }
-
- public static void start() {
-  lasttime = System.nanoTime();
- }
-
- public static long elapsed() {
-  return System.nanoTime() - lasttime;
- }
+public interface MainGenericGUI {
+ int getSelectedOAIndex();
+ int getSelectedFunIndex();
 }

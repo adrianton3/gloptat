@@ -21,36 +21,22 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
 
-import alg.ConfString;
-import alg.OA;
-import alg.OAParams;
-import alg.ga.GAParams;
-import alg.pso.PSOParams;
-
-import def.Dbo;
-import def.Fasten;
+import def.MainGeneric;
 import def.MainVis;
 
-class ActOA implements ActionListener
-{
- MainVis outer;
+class ActOA implements ActionListener {
+ MainGeneric outer;
  
- ActOA(MainVis outer)
- {
+ ActOA(MainGeneric outer) {
   this.outer = outer;
  }
  
- public void actionPerformed(ActionEvent e) 
- {
-  int tmp = outer.se.cmb_oa.getSelectedIndex();
+ public void actionPerformed(ActionEvent e) {
+  int tmp = outer.se.getSelectedOAIndex();
   
   outer.activeOA = outer.oa[tmp];
   outer.activeOAParams = outer.oaparams[tmp];
   outer.activeConf = outer.conf[tmp];
-  
-  Dbo.out("sel ga " + (outer.activeOAParams instanceof GAParams));
-  Dbo.out("sel pso " + (outer.activeOAParams instanceof PSOParams));
  }
 }

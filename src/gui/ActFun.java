@@ -21,23 +21,19 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
 
-import def.Dbo;
+import def.MainGeneric;
 import def.MainVis;
 
-class ActFun implements ActionListener
-{
- MainVis outer;
+class ActFun implements ActionListener {
+ MainGeneric outer;
  
- ActFun(MainVis outer)
- {
+ ActFun(MainGeneric outer) {
   this.outer = outer;
  }
  
- public void actionPerformed(ActionEvent e) 
- {
-  int tmp = outer.se.cmb_fun.getSelectedIndex();
+ public void actionPerformed(ActionEvent e) {
+  int tmp = outer.se.getSelectedFunIndex();
   outer.changeOF(tmp);
  }
 }

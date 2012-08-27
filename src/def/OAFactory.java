@@ -19,11 +19,15 @@
 
 package def;
 
+import java.util.HashMap;
+
 import objfun.MOF;
 import alg.OA;
 import alg.OAParams;
 import alg.ga.GA;
+import alg.ga.GAParams;
 import alg.pso.PSO;
+import alg.pso.PSOParams;
 
 public class OAFactory {
  public static OA get(String oanam, OAParams oaparams, MOF of, double[][] dom) {
@@ -36,5 +40,14 @@ public class OAFactory {
   oa.setParams(oaparams);
   
   return oa;
+ }
+ 
+ public static OAParams getParams(String oanam, HashMap<String,Double> map) {
+  OAParams oaparams = null;
+  
+  if(oanam.equals("GA")) oaparams = GAParams.fromMap(map);
+  else if(oanam.equals("PSO")) oaparams = PSOParams.fromMap(map);
+  
+  return oaparams;
  }
 }

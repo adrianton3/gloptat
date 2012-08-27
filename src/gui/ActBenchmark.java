@@ -21,25 +21,20 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
-
-import alg.OA;
 
 import def.Fasten;
+import def.MainGeneric;
 import def.MainVis;
 
-class ActBenchmark implements ActionListener
-{
- MainVis outer;
+class ActBenchmark implements ActionListener {
+ MainGeneric outer;
  final int ntrials = 20;
  
- ActBenchmark(MainVis outer)
- {
+ ActBenchmark(MainGeneric outer) {
   this.outer = outer;
  }
  
- public void actionPerformed(ActionEvent e) 
- {
+ public void actionPerformed(ActionEvent e) {
   outer.activeOA.setParams(outer.activeOAParams);
   
   outer.con.add("Optimizing " + outer.of.getFunc().toString() + "\n" +

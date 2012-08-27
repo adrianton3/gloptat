@@ -21,23 +21,18 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
 
-import alg.OA;
-
+import def.MainGeneric;
 import def.MainVis;
 
-class ActConf implements ActionListener
-{
- MainVis outer;
+class ActConf implements ActionListener {
+ MainGeneric outer;
  
- ActConf(MainVis outer)
- {
+ ActConf(MainGeneric outer) {
   this.outer = outer;
  }
  
- public void actionPerformed(ActionEvent e) 
- {
+ public void actionPerformed(ActionEvent e) {
   outer.activeConf.frame.setVisible(true);
  }
 }
