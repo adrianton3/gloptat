@@ -54,7 +54,7 @@ public class MainVis extends MainGeneric {
  //public OAParams[] oaparams;
  
  //Search space
- double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
+ //double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
  
  //...
  //public OA activeOA;

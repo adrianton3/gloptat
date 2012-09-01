@@ -22,15 +22,18 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import bench.Dispatcher;
+
+import def.Dbo;
 import def.Fasten;
 import def.MainGeneric;
-import def.MainVis;
 
-class ActBenchmark implements ActionListener {
+class ActBenchmarkMT implements ActionListener {
  MainGeneric outer;
+ Dispatcher dispatcher;
  final int ntrials = 20;
  
- ActBenchmark(MainGeneric outer) {
+ ActBenchmarkMT(MainGeneric outer) {
   this.outer = outer;
  }
  
@@ -41,30 +44,9 @@ class ActBenchmark implements ActionListener {
                 //"Iterations: " + gaspar.niter + "\n" +
                 "Using: " + outer.activeOA.getNam() + "\n" +
                 "Parameters:\n" + outer.activeOAParams.toString());
-
-  double[] rez = new double[ntrials];
-  int i;
-  for(i=0;i<ntrials;i++)
-  {
-   outer.activeOA.resetNapel();
-   outer.activeOA.alg();
-   rez[i] = outer.activeOA.getBestFit();
-  }
-
-  outer.con.add("Running "+ntrials+" instances of GA...");
-  for(i=0;i<ntrials;i++)
-   outer.con.add(i+": "+Fasten.round(rez[i],2));
-
-  double min, max, avg;
-
-  max = Fasten.round(Fasten.max(rez),2);
-  min = Fasten.round(Fasten.min(rez),2);
-  avg = Fasten.round(Fasten.avg(rez),2);
-
-  outer.con.add("Maximum: " + max);
-  outer.con.add("Minimum: " + min);
-  outer.con.add("Average: " + avg);
   
-  outer.con.separator();
+  dispatcher = new Dispatcher(outer,outer.activeOA.getNam(),outer.activeOAParams,outer.of,outer.dom,5);
+  //if(outer.dom == null) Dbo.out("null");
+  dispatcher.dispatch();
  }
 }

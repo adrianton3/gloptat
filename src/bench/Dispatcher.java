@@ -19,12 +19,17 @@
 
 package bench;
 
+import def.Dbo;
+import def.MainBench;
+import def.MainGeneric;
 import def.OAFactory;
 import objfun.MOF;
 import alg.OAParams;
+import alg.SimResult;
 
 public class Dispatcher {
- final String oanam;
+	final MainGeneric outer;
+	final String oanam;
  final OAParams oaparams;
  final MOF of;
  final double[][] dom;
@@ -33,7 +38,10 @@ public class Dispatcher {
  
  int threads_res = 0;
  
- Dispatcher(String oanam, OAParams oaparams, MOF of, double[][] dom, int trialsperthread) {
+ SimResult sr[];
+ 
+ public Dispatcher(MainGeneric outer, String oanam, OAParams oaparams, MOF of, double[][] dom, int trialsperthread) {
+  this.outer = outer;
   this.oanam = oanam;
   this.oaparams = oaparams;
   this.of = of;
@@ -41,23 +49,36 @@ public class Dispatcher {
   this.trialsperthread = trialsperthread;
  }
  
- synchronized void inc() {
-  threads_res++;
+ synchronized void inc(int idnr, SimResult[] sr) {
+ 	int i;
+  for(i=0;i<sr.length;i++) {
+   this.sr[trialsperthread*idnr + i] = sr[i];
+  }
+	 
+	 threads_res++; Dbo.out("threads_res "+threads_res);
   if(threads_res >= nthreads) notify();
  }
  
- void dispatch() {
-  int i;
-  for(i=0;i<nthreads;i++) {
-   new Thread(new GOThread(this,OAFactory.get(oanam,oaparams,of,dom),trialsperthread)).start();
-  }
-  
-  synchronized (this) {
-   try {
-    wait();
-   } catch (InterruptedException e) { e.printStackTrace(); }
-  }
-  
-  System.out.println("Done: "+threads_res);
+ public void dispatch() {
+	sr = new SimResult[trialsperthread*nthreads]; 
+	
+ int i;
+ for(i=0;i<nthreads;i++) {
+  new Thread(new GOThread(this,i,OAFactory.get(oanam,oaparams,of,dom),trialsperthread)).start();
  }
+  
+ synchronized (this) {
+  try {
+   wait();
+  } catch (InterruptedException e) { e.printStackTrace(); }
+ }
+  
+  publishResults(sr);
+ }
+
+	private void publishResults(SimResult[] sr) {
+		for(SimResult s: sr)
+	  outer.con.add(s.toString());
+		outer.con.separator();
+	}
 }

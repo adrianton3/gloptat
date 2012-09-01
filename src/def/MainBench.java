@@ -20,14 +20,19 @@
 package def;
 
 import gui.ConfigGUI;
+import gui.MainBenchGUI;
+import gui.MainVisGUI;
 import gui.OutputGUI;
 
 import java.util.HashMap;
 
 import objfun.MOF;
 import alg.ConfString;
+import alg.OA;
 import alg.OAParams;
+import alg.ga.GA;
 import alg.ga.GAParams;
+import alg.pso.PSO;
 import alg.pso.PSOParams;
 
 public class MainBench extends MainGeneric {
@@ -42,7 +47,7 @@ public class MainBench extends MainGeneric {
  //public OAParams[] oaparams;
  
  //Search space
- double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
+ //double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
  
  //...
  //public OAParams activeOAParams;
@@ -56,7 +61,7 @@ public class MainBench extends MainGeneric {
   of.setFunc(0);
   of.setDom(dom[0][0],dom[0][1],dom[1][0],dom[1][1]); //not ok
  }
- 
+ /*
  void setupGA() //no need
  {
   oaparams[0] = new GAParams();
@@ -67,6 +72,32 @@ public class MainBench extends MainGeneric {
  void setupPSO() //no need
  {
   oaparams[1] = new PSOParams();
+  
+  conf[1] = new ConfigGUI("Config PSO","");
+ }*/
+ 
+ void setupGA()
+ {
+  oaparams[0] = new GAParams();
+  
+  oa[0] = new GA(of);
+  oa[0].setDom(dom);
+  oa[0].setParams(oaparams[0]);
+  
+  //oa[0].init();
+  
+  conf[0] = new ConfigGUI("Config GA","");
+ }
+ 
+ void setupPSO()
+ {
+  oaparams[1] = new PSOParams();
+  
+  oa[1] = new PSO(of);
+  oa[1].setDom(dom);
+  oa[1].setParams(oaparams[1]);
+  
+  //oa[1].init();
   
   conf[1] = new ConfigGUI("Config PSO","");
  }
@@ -82,16 +113,20 @@ public class MainBench extends MainGeneric {
  
  void start()
  {
+  se = new MainBenchGUI(this);
+ 	
   con = new OutputGUI();
   
   setupOF();
   
+  oa = new OA[2];
   oaparams = new OAParams[2];
   conf = new ConfigGUI[2];
   
   setupGA();
   setupPSO();
   
+  activeOA = oa[0];
   activeOAParams = oaparams[0];
   activeConf = conf[0];
  }

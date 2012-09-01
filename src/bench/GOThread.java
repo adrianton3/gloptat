@@ -19,29 +19,33 @@
 
 package bench;
 
+import def.Dbo;
 import alg.OA;
+import alg.SimResult;
 
 public class GOThread implements Runnable {
  final Dispatcher outer;
+ final int idnr;
  final OA oa;
  final int ntrials;
 
- GOThread(Dispatcher outer, OA oa, int ntrials) {
+ GOThread(Dispatcher outer, int idnr, OA oa, int ntrials) {
   this.outer = outer;
+  this.idnr = idnr;
   this.oa = oa;
   this.ntrials = ntrials;
  }
 
  public void run() {
-  double[] rez = new double[ntrials];
+  SimResult[] rez = new SimResult[ntrials];
   int i;
   for(i=0;i<ntrials;i++)
   {
    oa.resetNapel();
    oa.alg();
-   rez[i] = oa.getBestFit();
+   rez[i] = new SimResult(oa.getBestFit());
   }
-  
-  outer.inc();
+
+  outer.inc(idnr,rez);
  } 
 }

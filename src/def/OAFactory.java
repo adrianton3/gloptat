@@ -33,8 +33,9 @@ public class OAFactory {
  public static OA get(String oanam, OAParams oaparams, MOF of, double[][] dom) {
   OA oa = null;
   
-  if(oanam.equals("GA")) oa = new GA(of);
-  else if(oanam.equals("PSO")) oa = new PSO(of);
+  if(oanam.equals("GA") || oanam.equals("Genetic Algorithm")) oa = new GA(of);
+  else if(oanam.equals("PSO") || oanam.equals("Particle Swarm Optimization")) oa = new PSO(of);
+  else Dbo.out("OAFactory: Unrecognized OA: " + oanam);
   
   oa.setDom(dom);
   oa.setParams(oaparams);

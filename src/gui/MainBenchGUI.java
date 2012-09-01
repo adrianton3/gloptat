@@ -64,7 +64,7 @@ public class MainBenchGUI implements Runnable, MainGenericGUI {
   frame.getContentPane().add(but_plot);
   
   but_config.addActionListener(new ActConf(outer));
-  but_benchmark.addActionListener(new ActBenchmark(outer));
+  but_benchmark.addActionListener(new ActBenchmarkMT(outer));
   but_plot.addActionListener(new ActPlot(outer));
   
   cmb_fun.addActionListener(new ActFun(outer));

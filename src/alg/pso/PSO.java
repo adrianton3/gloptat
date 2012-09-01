@@ -26,7 +26,7 @@ import objfun.ObjectiveFunction;
 
 public class PSO implements OA
 {
- public final String nam = "Particle swarm optimization";
+ public final String nam = "Particle Swarm Optimization";
  private PSOParams par = new PSOParams();
  private double dom[][];
  private Particle[] part;

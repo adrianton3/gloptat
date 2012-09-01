@@ -75,7 +75,7 @@ public class MainVisGUI implements Runnable, MainGenericGUI {
   but_init.addActionListener(new ActInit(outer));
   but_step.addActionListener(new ActStep(outer));
   but_run.addActionListener(new ActRun(outer));
-  but_benchmark.addActionListener(new ActBenchmark(outer));
+  but_benchmark.addActionListener(new ActBenchmarkLight(outer));
   but_plot.addActionListener(new ActPlot(outer));
   
   cmb_fun.addActionListener(new ActFun(outer));

@@ -27,7 +27,7 @@ import alg.OA;
 import alg.OAParams;
 
 public abstract class MainGeneric {
-  //GUI
+ //GUI
 	public MainGenericGUI se;
 	public OutputGUI con;
 	public ConfigGUI[] conf; 
@@ -35,6 +35,9 @@ public abstract class MainGeneric {
 	
 	//Objective function
 	public MOF of;
+	
+	//Search space
+	public double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
 	
 	//Optimization algorithms
 	public OA[] oa;
