@@ -23,6 +23,7 @@ import def.Dbo;
 import def.MainBench;
 import def.MainGeneric;
 import def.OAFactory;
+import objfun.Domain;
 import objfun.MOF;
 import alg.OAParams;
 import alg.SimResult;
@@ -32,7 +33,7 @@ public class Dispatcher {
 	final String oanam;
  final OAParams oaparams;
  final MOF of;
- final double[][] dom;
+ final Domain dom;
  final int nthreads = 4;
  final int trialsperthread;
  
@@ -40,7 +41,7 @@ public class Dispatcher {
  
  SimResult sr[];
  
- public Dispatcher(MainGeneric outer, String oanam, OAParams oaparams, MOF of, double[][] dom, int trialsperthread) {
+ public Dispatcher(MainGeneric outer, String oanam, OAParams oaparams, MOF of, Domain dom, int trialsperthread) {
   this.outer = outer;
   this.oanam = oanam;
   this.oaparams = oaparams;

@@ -36,6 +36,8 @@ import static org.lwjgl.opengl.GL11.glMatrixMode;
 import static org.lwjgl.opengl.GL11.glShadeModel;
 import static org.lwjgl.opengl.GL11.glViewport;
 
+import objfun.Domain;
+
 import org.lwjgl.input.Mouse;
 import org.lwjgl.opengl.Display;
 import org.lwjgl.opengl.DisplayMode;
@@ -48,7 +50,7 @@ import def.Dbo;
 public class Displayer 
 {
  int rezx = 0, rezy = 0;
- double[][] dom;
+ Domain dom;
  double[][] val;
  double[][] pointers;
  boolean[] pointerstatus;
@@ -150,36 +152,35 @@ public class Displayer
  {
   if(pointers != null)
   {
-  float spx = -rezx/2f;
-  float spy = -rezy/2f;
-  float tmpx, tmpy;
-  float rapx, rapy;
-  int tmpi, tmpj;
-  
-  rapx = rezx/(float)(dom[0][1]-dom[0][0]);
-  rapy = rezy/(float)(dom[1][1]-dom[1][0]);
-  
-  int i;
-  for(i=0;i<pointers.length;i++)
-  {
-   tmpx = spx + (float)(pointers[i][0] - dom[0][0]) * rapx;
-   tmpy = spy + (float)(pointers[i][1] - dom[1][0]) * rapy;
-
-   tmpi = (int)((pointers[i][0] - dom[0][0])*rapx); //ar trebui sa interpolez sau...
-   tmpj = (int)((pointers[i][1] - dom[1][0])*rapy);
-   
-   tmpi = Math.min(Math.max(0,tmpi),rezx-1);
-   tmpj = Math.min(Math.max(0,tmpj),rezy-1);
-   
-   if(pointers[i][0]>dom[0][0] && pointers[i][0]<dom[0][1] &&
-      pointers[i][1]>dom[1][0] && pointers[i][1]<dom[1][1])
-    
-   GL11.glPushMatrix();
-   GL11.glTranslatef(tmpx,tmpy,(float)(val[tmpi][tmpj]));
-   GL11.glScaled(1.1,1.1,0.5);
-   Pointer.call();
-   GL11.glPopMatrix();
-  }
+	  float spx = -rezx/2f;
+	  float spy = -rezy/2f;
+	  float tmpx, tmpy;
+	  float rapx, rapy;
+	  int tmpi, tmpj;
+	  
+	  rapx = rezx/(float)(dom.d[0].r - dom.d[0].l);
+	  rapy = rezy/(float)(dom.d[1].r - dom.d[1].l);
+	  
+	  int i;
+	  for(i=0;i<pointers.length;i++)
+	  {
+	   tmpx = spx + (float)(pointers[i][0] - dom.d[0].l) * rapx;
+	   tmpy = spy + (float)(pointers[i][1] - dom.d[1].l) * rapy;
+	
+	   tmpi = (int)((pointers[i][0] - dom.d[0].l)*rapx); //should interpolate...
+	   tmpj = (int)((pointers[i][1] - dom.d[1].l)*rapy);
+	   
+	   tmpi = Math.min(Math.max(0,tmpi),rezx-1);
+	   tmpj = Math.min(Math.max(0,tmpj),rezy-1);
+	   
+	   if(dom.in(pointers[i])) { 
+		   GL11.glPushMatrix();
+		   GL11.glTranslatef(tmpx,tmpy,(float)(val[tmpi][tmpj]));
+		   GL11.glScaled(1.1,1.1,0.5);
+		   Pointer.call();
+		   GL11.glPopMatrix();
+	   }
+	  }
   }
  }
  
@@ -233,9 +234,9 @@ public class Displayer
    }
  }*/
 //------------------------------------------------------------------------------
- public void setDom(double[][] idom)
+ public void setDom(Domain dom)
  {
-  dom = idom;
+  this.dom = dom;
  }
 //------------------------------------------------------------------------------
  public void setVal(double[][] val)

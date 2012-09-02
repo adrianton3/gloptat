@@ -19,6 +19,8 @@
 
 package alg.pso;
 
+import objfun.Domain;
+
 class Particle
 {
  final int nv;
@@ -28,27 +30,28 @@ class Particle
  final double atenuator;
  final double social;
  final double personal;
- final double[][] dom;
+ final Domain dom;
 //------------------------------------------------------------------------------
- Particle(double[][] idom, double iatenuator, double isocial, double ipersonal)
+ Particle(Domain dom, double iatenuator, double isocial, double ipersonal)
  {
-  nv = idom.length;
+  nv = dom.d.length;
   pos = new double[nv];
   vit = new double[nv];
-  dom = idom;
+  this.dom = dom;
+  
   int i;
-  for(i=0;i<nv;i++)
-  {
-   pos[i] = Math.random()*(idom[i][1]-idom[i][0])+idom[i][0];
-   vit[i] = Math.random()*((idom[i][1]-idom[i][0])/10d);
+  for(i=0;i<nv;i++) {
+   pos[i] = Math.random() * (dom.d[i].r - dom.d[i].l) + dom.d[i].l;
+   vit[i] = Math.random() * ((dom.d[i].r - dom.d[i].l)/10d);
    if(Math.random()>0.5) vit[i] = -vit[i];
   }
+  
   atenuator = iatenuator + Math.random()/5 - 0.1;
   social = isocial + Math.random()/5 - 0.1;
   personal = ipersonal + Math.random()/5 - 0.1;
  }
 //------------------------------------------------------------------------------
- Particle(double[][] dom, double[] pos, double[] vit, double atenuator, double social, double personal)
+ Particle(Domain dom, double[] pos, double[] vit, double atenuator, double social, double personal)
  {
   this.dom = dom;
   this.pos = pos; this.nv = pos.length;
@@ -62,7 +65,7 @@ class Particle
  {
   int i;
   for(i=0;i<nv;i++)
-   vit[i] = Math.min((dom[i][1]-dom[i][0])/3d,
+   vit[i] = Math.min((dom.d[i].r - dom.d[i].l)/3d,
            (vit[i]*atenuator) + ((ibbp.pos[i]-pos[i])*social) + ((ibp.pos[i]-pos[i])*personal));
  }
 //------------------------------------------------------------------------------
@@ -77,7 +80,7 @@ class Particle
  {
   int i;
   for(i=0;i<nv;i++)
-   pos[i] = ip.pos[i] + (((int)Math.random())*2-1)*Math.log(Math.min(Math.random()*(dom[i][1]-dom[i][0])*0.3,1));
+   pos[i] = ip.pos[i] + (((int)Math.random())*2-1)*Math.log(Math.min(Math.random()*(dom.d[i].r - dom.d[i].l)*0.3,1));
  }
 //------------------------------------------------------------------------------
  public Particle copy()

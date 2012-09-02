@@ -19,55 +19,45 @@
 
 package objfun;
 
-public class MOF implements ObjectiveFunction //mega objective function?
-{
- double sdomx, sdomy, edomx, edomy;
+public class MOF implements ObjectiveFunction {
+ Domain dom;
  public double minc, maxc;
  private WOF func;
  private int ncalls;
 //------------------------------------------------------------------------------
- public void setFunc(int idnr)
- {
-  switch(idnr)
-  {
+ public void setFunc(int idnr) {
+  switch(idnr) {
    case 0: func = new F_DeJong(); break;
    case 1: func = new F_Rastrigin(); break;
    case 2: func = new F_Michalewicz(); break;
   }
  }
 //------------------------------------------------------------------------------
- public WOF getFunc()
- {
+ public WOF getFunc() {
   return func;
  }
 //------------------------------------------------------------------------------
- public void setDom(double sdomx, double edomx, double sdomy, double edomy)
- {
-  this.sdomx = sdomx;
-  this.edomx = edomx;
-  this.sdomy = sdomy;
-  this.edomy = edomy;
+ public void setDom(Domain dom) {
+  this.dom = dom;
  }
 //------------------------------------------------------------------------------
- private double vod(double x, double y)
- { 
+ private double vod(double x, double y) { 
   return func.f(new double[] {x,y});
  }
 //------------------------------------------------------------------------------
- public double[][] compute(int rezx, int rezy)
- {
+ public double[][] compute(int rezx, int rezy) {
   double[][] ret = new double[rezx][rezy];
   double pasx, pasy;
   double px, py;
-  pasx = (edomx - sdomx) / rezx;
-  pasy = (edomy - sdomy) / rezy;
+  pasx = (dom.d[0].r - dom.d[0].l) / rezx;
+  pasy = (dom.d[1].r - dom.d[1].l) / rezy;
   maxc = -10000; minc = 10000;
   int i, j;
 
-  px = sdomx;
+  px = dom.d[0].l;
   for(i=0;i<rezx;i++)
   {
-   py = sdomy;
+   py = dom.d[0].l;
    for(j=0;j<rezy;j++)
    {
     ret[i][j] = vod(px,py);
@@ -83,22 +73,18 @@ public class MOF implements ObjectiveFunction //mega objective function?
   return ret;
  }
 //------------------------------------------------------------------------------
- public void resetNCalls()
- {
+ public void resetNCalls() {
   ncalls = 0;
  }
 //------------------------------------------------------------------------------
- public int getNCalls()
- {
+ public int getNCalls() {
   return ncalls;
  }
 //------------------------------------------------------------------------------
- public double f(double[] x)
- {
+ public double f(double[] p) {
   ncalls++;
   
-  if((x[0] >= sdomx && x[0] <= edomx) && (x[1] >= sdomy && x[1] <= edomy))
-   return func.f(x);
+  if(dom.in(p)) return func.f(p);
   else return -10000;
  }
 }

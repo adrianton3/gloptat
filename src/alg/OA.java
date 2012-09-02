@@ -19,9 +19,11 @@
 
 package alg;
 
+import objfun.Domain;
+
 public interface OA
 {
- void setDom(double[][] dom);
+ void setDom(Domain dom);
  void randomize();
  //void alloc();
  //void setPop(double[][] ipop);

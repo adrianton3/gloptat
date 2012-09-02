@@ -22,13 +22,14 @@ package alg.pso;
 import alg.OA;
 import alg.OAParams;
 import alg.SimParams;
+import objfun.Domain;
 import objfun.ObjectiveFunction;
 
 public class PSO implements OA
 {
  public final String nam = "Particle Swarm Optimization";
  private PSOParams par = new PSOParams();
- private double dom[][];
+ private Domain dom;
  private Particle[] part;
  private Particle[] best;
  private double[] fit, bfit;
@@ -41,9 +42,9 @@ public class PSO implements OA
   ifit = iifit;
  }
 //------------------------------------------------------------------------------
- public void setDom(double[][] idom)
+ public void setDom(Domain dom)
  {
-  dom = idom;
+  this.dom = dom;
  }
 //------------------------------------------------------------------------------
  private void alloc()

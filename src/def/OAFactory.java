@@ -21,6 +21,7 @@ package def;
 
 import java.util.HashMap;
 
+import objfun.Domain;
 import objfun.MOF;
 import alg.OA;
 import alg.OAParams;
@@ -30,7 +31,7 @@ import alg.pso.PSO;
 import alg.pso.PSOParams;
 
 public class OAFactory {
- public static OA get(String oanam, OAParams oaparams, MOF of, double[][] dom) {
+ public static OA get(String oanam, OAParams oaparams, MOF of, Domain dom) {
   OA oa = null;
   
   if(oanam.equals("GA") || oanam.equals("Genetic Algorithm")) oa = new GA(of);

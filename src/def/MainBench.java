@@ -36,30 +36,13 @@ import alg.pso.PSO;
 import alg.pso.PSOParams;
 
 public class MainBench extends MainGeneric {
- //GUI
- //public OutputGUI con;
- //public ConfigGUI[] conf;
- 
- //Objective function
- //public MOF of;
- 
- //Optimization algorithms 
- //public OAParams[] oaparams;
- 
- //Search space
- //double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
- 
- //...
- //public OAParams activeOAParams;
- //public ConfigGUI activeConf;
- 
  String oanam = "GA";
  
  void setupOF()
  {
   of = new MOF();
   of.setFunc(0);
-  of.setDom(dom[0][0],dom[0][1],dom[1][0],dom[1][1]); //not ok
+  of.setDom(dom);
  }
  /*
  void setupGA() //no need
@@ -105,10 +88,7 @@ public class MainBench extends MainGeneric {
  public void changeOF(int id)
  {
   of.setFunc(id);
-  dom[0][0] = of.getFunc().psdomx;
-  dom[0][1] = of.getFunc().pedomx;
-  dom[1][0] = of.getFunc().psdomy;
-  dom[1][1] = of.getFunc().pedomy;
+  dom = of.getFunc().dom;
  }
  
  void start()

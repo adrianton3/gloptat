@@ -19,6 +19,7 @@
 
 package alg.ga;
 
+import objfun.Domain;
 import objfun.ObjectiveFunction;
 import alg.OA;
 import alg.OAParams;
@@ -31,7 +32,7 @@ public class GA implements OA
  private Ivan[] gv;
  private Ivan[] gn;
  private double[] fit;
- private double[][] dom;
+ private Domain dom;
  private ObjectiveFunction ifit;
  private int nactive;
  private double genn;
@@ -48,9 +49,8 @@ public class GA implements OA
   fit = new double[par.niv];
  }
 //------------------------------------------------------------------------------
- public void setDom(double[][] idom)
- {
-  dom = idom;
+ public void setDom(Domain dom) {
+  this.dom = dom;
  }
 //------------------------------------------------------------------------------
  public void setParams(OAParams ipar)

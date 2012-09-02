@@ -17,35 +17,17 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package def;
+package objfun;
 
-import gui.ConfigGUI;
-import gui.MainGenericGUI;
-import gui.OutputGUI;
-import objfun.Domain;
-import objfun.Interval;
-import objfun.MOF;
-import alg.OA;
-import alg.OAParams;
+public class F_Michalewicz extends WOF {
+ F_Michalewicz() {
+ 	dom = Domain.fromInterval(new Interval(0,Math.PI),2);
+ }
 
-public abstract class MainGeneric {
- //GUI
-	public MainGenericGUI se;
-	public OutputGUI con;
-	public ConfigGUI[] conf; 
-	public ConfigGUI activeConf;
-	
-	//Objective function
-	public MOF of;
-	
-	//Search space
-	public Domain dom = new Domain(new Interval[] {new Interval(-5.12,5.12), new Interval(-5.12,5.12)});
-	
-	//Optimization algorithms
-	public OA[] oa;
-	public OAParams[] oaparams;
-	public OA activeOA;
-	public OAParams activeOAParams;
-	
-	public abstract void changeOF(int tmp);
+ public String toString() { return "Michalewicz"; }
+ 
+ double f(double[] inp) {
+  return (Math.sin(inp[0]) * Math.pow(Math.sin(1*inp[0]*inp[0] / Math.PI), 20) +
+          Math.sin(inp[1]) * Math.pow(Math.sin(2*inp[1]*inp[1] / Math.PI), 20));
+ }
 }

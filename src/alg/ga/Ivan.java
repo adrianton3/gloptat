@@ -19,25 +19,27 @@
 
 package alg.ga;
 
+import objfun.Domain;
+
 public class Ivan
 {
  final int ng;
  boolean active = true;
- final double[][] dom;
+ final Domain dom;
  private final Chromosome[] gene;
 //------------------------------------------------------------------------------
- Ivan(double[][] idom)
+ Ivan(Domain dom)
  {
-  dom = idom; ng = dom.length;
+  this.dom = dom; ng = dom.d.length;
   gene = new Chromosome[ng];
   int i;
   for(i=0;i<ng;i++)
    gene[i] = new Chromosome();
  }
 //------------------------------------------------------------------------------
- Ivan(double[][] idom, Chromosome[] iag)
+ Ivan(Domain dom, Chromosome[] iag)
  {
-  dom = idom; ng = dom.length;
+  this.dom = dom; ng = dom.d.length;
   gene = new Chromosome[ng];
   int i;
   for(i=0;i<ng;i++)
@@ -103,7 +105,7 @@ public class Ivan
   double[] ret = new double[ng];
   int i;
   for(i=0;i<ng;i++)
-   ret[i] = dom[i][0] + (dom[i][1] - dom[i][0]) / Math.pow(2,Chromosome.nb) * gene[i].toLong();
+   ret[i] = dom.d[i].l + (dom.d[i].r - dom.d[i].l) / Math.pow(2,Chromosome.nb) * gene[i].toLong();
   return ret;
  }
 //------------------------------------------------------------------------------
@@ -111,7 +113,7 @@ public class Ivan
  {
   int i;
   for(i=0;i<ng;i++)
-   gene[i].fromLong((long)((iar[i]-dom[i][0])*(Math.pow(2,Chromosome.nb) / (dom[i][1]-dom[i][0]))));
+   gene[i].fromLong((long)((iar[i] - dom.d[i].l)*(Math.pow(2,Chromosome.nb) / (dom.d[i].r - dom.d[i].l))));
  }
 //------------------------------------------------------------------------------
  public Chromosome getGena(int ii) { return gene[ii]; }

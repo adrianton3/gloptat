@@ -37,38 +37,16 @@ import alg.pso.PSO;
 import alg.pso.PSOParams;
 
 public class MainVis extends MainGeneric {
- //GUI
- //public MainVisGUI se;
- //public OutputGUI con;
- //public ConfigGUI[] conf;
- 
- //Plotter
  public Displayer d;
- 
- //Objective function
- //public MOF of;
- 
- 
- //Optimization algorithms 
- //public OA[] oa;
- //public OAParams[] oaparams;
- 
- //Search space
- //double[][] dom = {{-5.12,5.12},{-5.12,5.12}};
- 
- //...
- //public OA activeOA;
- //public OAParams activeOAParams;
- //public ConfigGUI activeConf;
- 
+
  void setupDisplayer() {
   d = new Displayer();
   
   int tmprx, tmpry;
   double dx, dy;
 
-  dx = dom[0][1]-dom[0][0];
-  dy = dom[1][1]-dom[1][0];
+  dx = dom.d[0].r - dom.d[0].l;
+  dy = dom.d[1].r - dom.d[1].l;
 
   if(dx < dy)
   {
@@ -91,7 +69,7 @@ public class MainVis extends MainGeneric {
  {
   of = new MOF();
   of.setFunc(0);
-  of.setDom(dom[0][0],dom[0][1],dom[1][0],dom[1][1]); //not ok
+  of.setDom(dom);
  }
  
  void setupGA()
@@ -123,16 +101,13 @@ public class MainVis extends MainGeneric {
  public void changeOF(int id)
  {
   of.setFunc(id);
-  dom[0][0] = of.getFunc().psdomx;
-  dom[0][1] = of.getFunc().pedomx;
-  dom[1][0] = of.getFunc().psdomy;
-  dom[1][1] = of.getFunc().pedomy;
+  dom = of.getFunc().dom;
   
   int tmprx, tmpry;
   double dx, dy;
 
-  dx = dom[0][1]-dom[0][0];
-  dy = dom[1][1]-dom[1][0];
+  dx = dom.d[0].r - dom.d[0].l;
+  dy = dom.d[1].r - dom.d[1].l;
 
   if(dx < dy)
   {
