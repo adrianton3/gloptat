@@ -30,23 +30,20 @@ import javax.swing.SwingUtilities;
 
 import def.MainVis;
 
-public class ConfigGUI implements Runnable 
-{
+public class ConfigGUI implements Runnable {
  String title;
  String deftext;
  JFrame frame;
  JScrollPane scroll_pane;
  JTextArea inp_conf;
  
- public ConfigGUI(String title, String deftext)
- {
+ public ConfigGUI(String title, String deftext) {
   this.title = title;
   this.deftext = deftext;
   SwingUtilities.invokeLater(this);
  }
  
- void assembleGUI()
- {
+ void assembleGUI() {
   frame = new JFrame(title);
   GridLayout experimentLayout = new GridLayout(1,1,4,4);
   frame.setLayout(experimentLayout);
@@ -55,24 +52,22 @@ public class ConfigGUI implements Runnable
   
   inp_conf = new JTextArea();
   inp_conf.setFont(new Font("monospaced", Font.PLAIN, 12) );
+  inp_conf.setText(deftext);
   
   scroll_pane = new JScrollPane(inp_conf);
   frame.getContentPane().add(scroll_pane);
   frame.pack();
  }
  
- public void run() 
- {
+ public void run() {
   assembleGUI();
  }
  
- public String getString()
- {
+ public String getString() {
   return inp_conf.getText();
  }
  
- public void setString(String s)
- {
+ public void setString(String s) {
   inp_conf.setText(s);
  }
 }

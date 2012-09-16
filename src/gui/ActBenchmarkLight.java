@@ -34,6 +34,7 @@ class ActBenchmarkLight implements ActionListener {
  }
  
  public void actionPerformed(ActionEvent e) {
+ 	outer.activeOAParams = outer.getOAParams();
   outer.activeOA.setParams(outer.activeOAParams);
   
   outer.con.add("Optimizing " + outer.of.getFunc().toString() + "\n" +
@@ -43,14 +44,14 @@ class ActBenchmarkLight implements ActionListener {
 
   double[] rez = new double[ntrials];
   int i;
-  for(i=0;i<ntrials;i++)
-  {
+  for(i=0;i<ntrials;i++) {
    outer.activeOA.resetNapel();
+   outer.activeOA.randomize();
    outer.activeOA.alg();
    rez[i] = outer.activeOA.getBestFit();
   }
 
-  outer.con.add("Running "+ntrials+" instances of GA...");
+  outer.con.add("Running "+ntrials+" instances...");
   for(i=0;i<ntrials;i++)
    outer.con.add(i+": "+Fasten.round(rez[i],2));
 

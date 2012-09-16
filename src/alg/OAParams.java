@@ -19,7 +19,6 @@
 
 package alg;
 
-public interface OAParams 
-{
+public interface OAParams {
  public String toString();
 }

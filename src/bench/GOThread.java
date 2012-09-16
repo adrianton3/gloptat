@@ -39,9 +39,9 @@ public class GOThread implements Runnable {
  public void run() {
   SimResult[] rez = new SimResult[ntrials];
   int i;
-  for(i=0;i<ntrials;i++)
-  {
+  for(i=0;i<ntrials;i++) {
    oa.resetNapel();
+   oa.randomize();
    oa.alg();
    rez[i] = new SimResult(oa.getBestFit());
   }

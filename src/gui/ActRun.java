@@ -33,21 +33,18 @@ import def.Dbo;
 import def.Fasten;
 import def.MainVis;
 
-class ActRun implements ActionListener
-{
+class ActRun implements ActionListener {
  MainVis outer;
  
- ActRun(MainVis outer)
- {
+ ActRun(MainVis outer) {
   this.outer = outer;
  }
  
- public void actionPerformed(ActionEvent e) 
- {
+ public void actionPerformed(ActionEvent e) {
   Timer timer = new Timer();
 
   outer.activeOAParams = outer.getOAParams();  
   outer.activeOA.setParams(outer.activeOAParams);
-  timer.scheduleAtFixedRate(new AutoStep(outer.activeOA,outer.d,30), 0, 100);
+  timer.scheduleAtFixedRate(new AutoStep(outer.activeOA,outer.d,50), 0, 100);
  }
 }

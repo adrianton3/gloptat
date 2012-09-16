@@ -22,11 +22,12 @@ package alg.ga;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import def.Dbo;
+
 import alg.OAParams;
 import alg.pso.PSOParams;
 
-public class GAParams implements OAParams
-{
+public class GAParams implements OAParams {
  public final static int CROSSOVER_1 = 0;
  public final static int CROSSOVER_2 = 1;
  public final static int CROSSOVER_U = 2;
@@ -51,8 +52,7 @@ public class GAParams implements OAParams
  public double mutation_inc = -1;        //final
  public boolean grow = false;            //final
 //------------------------------------------------------------------------------
- public String toString()
- {
+ public String toString() {
   String ret = "";
   ret = "Niv: " + niv + "\n" +
         "Popmin: " + popmin + "\n" +
@@ -73,31 +73,29 @@ public class GAParams implements OAParams
   return ret;
  }
  
- public static GAParams fromMap(HashMap<String,Double> map)
- {
+ public static GAParams fromMap(HashMap<String,Double> map) {
   GAParams ret = new GAParams();
   
-  for(Entry<String, Double> entry : map.entrySet())
-  {
-   String key = entry.getKey();
+  for(Entry<String, Double> entry : map.entrySet()) {
+   String key = entry.getKey().toLowerCase();
    double val = entry.getValue();
-   
-   if(key.equals("np")) ret.niv = (int)val;
+
+   if(key.equals("niv")) ret.niv = (int)val;
    else if(key.equals("popmin")) ret.popmin = (int)val;
    else if(key.equals("ndrop")) ret.ndrop = (int)val;
    else if(key.equals("nnew")) ret.nnew = (int)val;
    else if(key.equals("ninvert")) ret.ninvert = (int)val;
-   else if(key.equals("selection_type")) ret.selection_type = (int)val;
-   else if(key.equals("selection_pressure")) ret.selection_pressure = (double)val;
-   else if(key.equals("damping_function")) ret.dampening_type = (int)val;
-   else if(key.equals("crossover_type")) ret.crossover_type = (int)val;
-   else if(key.equals("crossover_bias")) ret.crossover_bias = (double)val;
-   else if(key.equals("mutation_type")) ret.mutation_type = (int)val;
-   else if(key.equals("mutation_chance")) ret.mutation_chance = (double)val;
-   else if(key.equals("mutation_lat")) ret.mutation_lat = (double)val;
-   else if(key.equals("mutation_start")) ret.mutation_start = (double)val;
-   else if(key.equals("mutation_inc")) ret.mutation_inc = (double)val;
-   else if(key.equals("grow")) { if(val==0) ret.grow = false; else ret.grow = true; }
+   else if(key.equals("selection type")) ret.selection_type = (int)val;
+   else if(key.equals("selection pressure")) ret.selection_pressure = (double)val;
+   else if(key.equals("damping function")) ret.dampening_type = (int)val;
+   else if(key.equals("crossover type")) ret.crossover_type = (int)val;
+   else if(key.equals("crossover bias")) ret.crossover_bias = (double)val;
+   else if(key.equals("mutation type")) ret.mutation_type = (int)val;
+   else if(key.equals("mutation chance")) ret.mutation_chance = (double)val;
+   else if(key.equals("mutation lat")) ret.mutation_lat = (double)val;
+   else if(key.equals("mutation start")) ret.mutation_start = (double)val;
+   else if(key.equals("mutation inc")) ret.mutation_inc = (double)val;
+   else if(key.equals("grow")) { if(val == 0) ret.grow = false; else ret.grow = true; }
   }
   
   return ret;

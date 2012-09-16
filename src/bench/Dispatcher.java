@@ -56,7 +56,7 @@ public class Dispatcher {
    this.sr[trialsperthread*idnr + i] = sr[i];
   }
 	 
-	 threads_res++; Dbo.out("threads_res "+threads_res);
+	 threads_res++;
   if(threads_res >= nthreads) notify();
  }
  

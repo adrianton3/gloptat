@@ -48,13 +48,11 @@ public class MainVis extends MainGeneric {
   dx = dom.d[0].r - dom.d[0].l;
   dy = dom.d[1].r - dom.d[1].l;
 
-  if(dx < dy)
-  {
+  if(dx < dy) {
    tmprx = 120;
    tmpry = (int)(tmprx * (dy/dx));
   }
-  else
-  {
+  else {
    tmpry = 120;
    tmprx = (int)(tmpry * (dx/dy));
   }
@@ -65,15 +63,13 @@ public class MainVis extends MainGeneric {
   d.maxc = of.maxc;
  }
  
- void setupOF()
- {
+ void setupOF() {
   of = new MOF();
   of.setFunc(0);
   of.setDom(dom);
  }
  
- void setupGA()
- {
+ void setupGA() {
   oaparams[0] = new GAParams();
   
   oa[0] = new GA(of);
@@ -82,11 +78,10 @@ public class MainVis extends MainGeneric {
   
   //oa[0].init();
   
-  conf[0] = new ConfigGUI("Config GA","");
+  conf[0] = new ConfigGUI("Config GA",oaparams[0].toString());
  }
  
- void setupPSO()
- {
+ void setupPSO() {
   oaparams[1] = new PSOParams();
   
   oa[1] = new PSO(of);
@@ -95,11 +90,10 @@ public class MainVis extends MainGeneric {
   
   //oa[1].init();
   
-  conf[1] = new ConfigGUI("Config PSO","");
+  conf[1] = new ConfigGUI("Config PSO",oaparams[1].toString());
  }
  
- public void changeOF(int id)
- {
+ public void changeOF(int id) {
   of.setFunc(id);
   dom = of.getFunc().dom;
   
@@ -109,13 +103,11 @@ public class MainVis extends MainGeneric {
   dx = dom.d[0].r - dom.d[0].l;
   dy = dom.d[1].r - dom.d[1].l;
 
-  if(dx < dy)
-  {
+  if(dx < dy) {
    tmprx = 120;
    tmpry = (int)(tmprx * (dy/dx));
   }
-  else
-  {
+  else {
    tmpry = 120;
    tmprx = (int)(tmpry * (dx/dy));
   }
@@ -128,8 +120,7 @@ public class MainVis extends MainGeneric {
   d.needsrepaint = true;
  }
  
- void start()
- {
+ void start() {
   se = new MainVisGUI(this);
 
   con = new OutputGUI();
@@ -151,27 +142,11 @@ public class MainVis extends MainGeneric {
   
   new Thread(new DisplayerThread(d)).start();
  }
-
+/*
  public OAParams getOAParams() 
  {
   HashMap<String,Double> map;
   map = new ConfString(activeConf.getString()).toMap();
-  
-  /*
-  Class[] c = {GAParams.class,PSOParams.class};
-  try {
-   return (OAParams) c[0].getMethod("fromMap").invoke(new Object[] {});
-  } catch (IllegalArgumentException e) {
-   e.printStackTrace();
-  } catch (SecurityException e) {
-   e.printStackTrace();
-  } catch (IllegalAccessException e) {
-   e.printStackTrace();
-  } catch (InvocationTargetException e) {
-   e.printStackTrace();
-  } catch (NoSuchMethodException e) {
-   e.printStackTrace();
-  } */
   
   //must find a better way of doing this
   if(activeOA instanceof GA) return GAParams.fromMap(map);
@@ -179,9 +154,8 @@ public class MainVis extends MainGeneric {
   
   return null;
  }
- 
- public static void main(String[] args) 
- {
+*/
+ public static void main(String[] args) {
   MainVis instance = new MainVis();
   instance.start();
  }

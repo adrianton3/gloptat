@@ -19,8 +19,7 @@
 
 package objfun;
 
-public interface ObjectiveFunction 
-{
+public interface ObjectiveFunction {
  double f(double[] iv);
  int getNCalls();
  void resetNCalls();

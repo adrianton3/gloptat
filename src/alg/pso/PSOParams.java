@@ -25,8 +25,7 @@ import java.util.Map.Entry;
 
 import alg.OAParams;
 
-public class PSOParams implements OAParams
-{
+public class PSOParams implements OAParams {
  public int niter = 20;
  public double target = 1000;
  
@@ -43,10 +42,9 @@ public class PSOParams implements OAParams
  public int network_param = 5;  //final
 //------------------------------------------------------------------------------
  @Override
- public String toString()
- {
+ public String toString() {
   String ret;
-  ret = "No particles: " + np + "\n" +
+  ret = "Np: " + np + "\n" +
         "Popmin: " + popmin + "\n" +
         "Ndrop: " + ndrop + "\n" +
         "Nnew: " + nnew + "\n" +
@@ -59,13 +57,11 @@ public class PSOParams implements OAParams
   return ret;
  }
  
- public static PSOParams fromMap(HashMap<String,Double> map)
- {
+ public static PSOParams fromMap(HashMap<String,Double> map) {
   PSOParams ret = new PSOParams();
   
-  for(Entry<String, Double> entry : map.entrySet())
-  {
-   String key = entry.getKey();
+  for(Entry<String, Double> entry : map.entrySet()) {
+   String key = entry.getKey().toLowerCase();
    double val = entry.getValue();
    
    if(key.equals("np")) ret.np = (int)val;
@@ -76,8 +72,8 @@ public class PSOParams implements OAParams
    else if(key.equals("personal")) ret.personal = (double)val;
    else if(key.equals("social")) ret.social = (double)val;
    else if(key.equals("random")) ret.random = (double)val;
-   else if(key.equals("network_type")) ret.network_type = (int)val;
-   else if(key.equals("network_param")) ret.network_param = (int)val;
+   else if(key.equals("network type")) ret.network_type = (int)val;
+   else if(key.equals("network param")) ret.network_param = (int)val;
   }
   
   return ret;

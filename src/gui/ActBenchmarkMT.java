@@ -38,6 +38,7 @@ class ActBenchmarkMT implements ActionListener {
  }
  
  public void actionPerformed(ActionEvent e) {
+ 	outer.activeOAParams = outer.getOAParams();
   outer.activeOA.setParams(outer.activeOAParams);
   
   outer.con.add("Optimizing " + outer.of.getFunc().toString() + "\n" +
@@ -46,7 +47,6 @@ class ActBenchmarkMT implements ActionListener {
                 "Parameters:\n" + outer.activeOAParams.toString());
   
   dispatcher = new Dispatcher(outer,outer.activeOA.getNam(),outer.activeOAParams,outer.of,outer.dom,5);
-  //if(outer.dom == null) Dbo.out("null");
   dispatcher.dispatch();
  }
 }

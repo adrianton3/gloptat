@@ -55,44 +55,38 @@ public class GA implements OA
 //------------------------------------------------------------------------------
  public void setParams(OAParams ipar)
  {
-  par = (GAParams) ipar;
+  par = (GAParams)ipar;
   alloc();
   randomize();
  }
 //------------------------------------------------------------------------------
- public void init()
- {
+ public void init() {
   genn = par.mutation_start;
   nactive = par.niv;
  }
 //------------------------------------------------------------------------------
- public void randomize()
- {
+ public void randomize() {
   init();
 
   int i;
-  for(i=0;i<par.niv;i++) 
-  {
+  for(i=0;i<par.niv;i++) {
    gv[i] = new Ivan(dom);
    gn[i] = null; //new Ivan(dom);
   } //?
   calcFit();
  }
 //------------------------------------------------------------------------------
- public void setPop(double[][] ipop)
- {
+ public void setPop(double[][] ipop) {
   par.niv = ipop.length;
   alloc();
   int i;
-  for(i=0;i<par.niv;i++)
-  {
+  for(i=0;i<par.niv;i++) {
    gv[i] = new Ivan(dom);
    gv[i].fromArray(ipop[i]);
   }
  }
 //------------------------------------------------------------------------------
- public double[][] getPop()
- {
+ public double[][] getPop() {
   double[][] ret = new double[par.niv][];
   int i;
   for(i=0;i<par.niv;i++)
@@ -159,8 +153,7 @@ public class GA implements OA
   return ifit.getNCalls();
  }
 //------------------------------------------------------------------------------
- public void resetNapel()
- {
+ public void resetNapel() {
   ifit.resetNCalls();
  }
 //------------------------------------------------------------------------------

@@ -58,24 +58,21 @@ public class PSO implements OA
 //------------------------------------------------------------------------------
  public void setParams(OAParams ipar)
  {
-  par = (PSOParams) ipar;
+  par = (PSOParams)ipar;
   alloc();
   randomize();
  }
 //------------------------------------------------------------------------------
- public void randomize()
- {
+ public void randomize() {
   int i;
-  for(i=0;i<par.np;i++)
-  {
+  for(i=0;i<par.np;i++) {
    part[i] = new Particle(dom,par.atenuator,par.social,par.personal);
    best[i] = new Particle(dom,par.atenuator,par.social,par.personal);
    best[i] = part[i].copy();
   }
   calcFit();
 
-  switch(par.network_type)
-  {
+  switch(par.network_type) {
    case 0:
     sn = SocialNetwork.Star(par.np);
     break;
@@ -187,8 +184,7 @@ public boolean[] getActive()
   return mark;
  }
 //------------------------------------------------------------------------------
- private int maxRand(int n)
- {
+ private int maxRand(int n) {
   int nsel = n;
   int i = 0, r, ret = -1;
 
@@ -196,11 +192,9 @@ public boolean[] getActive()
    if(part[i].active) { ret = i; break; }
 
   i = 0;
-  while(i<nsel)
-  {
+  while(i<nsel) {
    r = (int)(Math.random()*par.np);
-   if(part[r].active)
-   {
+   if(part[r].active) {
     i++;
     if(fit[r] > fit[ret]) ret = r;
    }
@@ -216,31 +210,29 @@ public boolean[] getActive()
 
   for(i=0;i<par.np;i++)
    if(part[i].active && mark[i])
-    if(fit[i] > max)
-    { max = fit[i]; maxi = i; }
+    if(fit[i] > max) { 
+    	max = fit[i]; 
+    	maxi = i; 
+    }
   
   return maxi;
  }
 //------------------------------------------------------------------------------
- private void renew()
- {
+ private void renew() {
   boolean[] mark = markLast(par.nnew);
   int i;
   for(i=0;i<par.np;i++)
-   if(mark[i])
-   {
+   if(mark[i]) {
     part[i] = new Particle(dom,par.atenuator,par.social,par.personal);
     best[i] = part[i].copy();
     //evaluate fitness?
    }
  }
 //------------------------------------------------------------------------------
- private void drop()
- {
-  if(nactive > par.popmin)
-  {
+ private void drop() {
+  if(nactive > par.popmin) {
    nactive = Math.max(nactive-par.ndrop,par.popmin);
-   boolean[] mark = markLast(par.ndrop); //nu atatea, ci pana la popmin
+   boolean[] mark = markLast(par.ndrop); //...
    int i;
    for(i=0;i<par.np;i++)
     if(mark[i])
@@ -248,29 +240,24 @@ public boolean[] getActive()
   }
  }
 //------------------------------------------------------------------------------
- public void step()
- {
+ public void step() {
   int i;
-  for(i=0;i<par.np;i++)
-  {
-   if(part[i].active)
-   {
+  for(i=0;i<par.np;i++) {
+   if(part[i].active) {
     if(sn == null)
      part[i].updateV(part[maxRand(par.network_param)],best[i]);
     else
      part[i].updateV(part[maxMark(sn.getLine(i))],best[i]);
 
     fit[i] = ifit.f(part[i].toArray());
-    if(fit[i] > bfit[i])
-    {
+    if(fit[i] > bfit[i]) {
      best[i] = part[i].copy();
      bfit[i] = fit[i];
     }
    }
   }
 
-  for(i=0;i<par.np;i++)
-  {
+  for(i=0;i<par.np;i++) {
    if(part[i].active)
     part[i].updateP();
   }
@@ -279,27 +266,23 @@ public boolean[] getActive()
   else if(par.ndrop > 0)renew();
  }
 //------------------------------------------------------------------------------
- public void alg()
- {
+ public void alg() {
   int i;
   i = 0;
-  while(getBestFit() < par.target && i < par.niter)
-  {
+  while(getBestFit() < par.target && i < par.niter) {
    step();
    i++;
   }
  }
 //------------------------------------------------------------------------------
- public String toString()
- {
+ public String toString() {
   String ret = ""; int i;
   for(i=0;i<par.np;i++)
    ret += part[i].toString() + ";";
   return ret;
  }
 //------------------------------------------------------------------------------
- public String getNam() 
- {
+ public String getNam() {
   return nam;
  }
 }

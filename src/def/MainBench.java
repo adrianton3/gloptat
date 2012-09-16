@@ -38,29 +38,13 @@ import alg.pso.PSOParams;
 public class MainBench extends MainGeneric {
  String oanam = "GA";
  
- void setupOF()
- {
+ void setupOF() {
   of = new MOF();
   of.setFunc(0);
   of.setDom(dom);
  }
- /*
- void setupGA() //no need
- {
-  oaparams[0] = new GAParams();
-  
-  conf[0] = new ConfigGUI("Config GA","");
- }
  
- void setupPSO() //no need
- {
-  oaparams[1] = new PSOParams();
-  
-  conf[1] = new ConfigGUI("Config PSO","");
- }*/
- 
- void setupGA()
- {
+ void setupGA() { // to be converted to OAFactory
   oaparams[0] = new GAParams();
   
   oa[0] = new GA(of);
@@ -69,11 +53,10 @@ public class MainBench extends MainGeneric {
   
   //oa[0].init();
   
-  conf[0] = new ConfigGUI("Config GA","");
+  conf[0] = new ConfigGUI("Config GA",oaparams[0].toString());
  }
  
- void setupPSO()
- {
+ void setupPSO() { // to be converted to OAFactory
   oaparams[1] = new PSOParams();
   
   oa[1] = new PSO(of);
@@ -82,17 +65,15 @@ public class MainBench extends MainGeneric {
   
   //oa[1].init();
   
-  conf[1] = new ConfigGUI("Config PSO","");
+  conf[1] = new ConfigGUI("Config PSO",oaparams[1].toString());
  }
  
- public void changeOF(int id)
- {
+ public void changeOF(int id) {
   of.setFunc(id);
   dom = of.getFunc().dom;
  }
  
- void start()
- {
+ void start() {
   se = new MainBenchGUI(this);
  	
   con = new OutputGUI();
@@ -111,29 +92,10 @@ public class MainBench extends MainGeneric {
   activeConf = conf[0];
  }
  
- public OAParams getOAParams() 
- {
+ public OAParams getOAParams() {
   HashMap<String,Double> map;
   map = new ConfString(activeConf.getString()).toMap();
   return OAFactory.getParams(oanam, map);
-  
-  /*
-    Class[] c = {GAParams.class,PSOParams.class};
-    try {
-     return (OAParams) c[0].getMethod("fromMap").invoke(new Object[] {});
-    } catch (IllegalArgumentException e) {
-     e.printStackTrace();
-    } catch (SecurityException e) {
-     e.printStackTrace();
-    } catch (IllegalAccessException e) {
-     e.printStackTrace();
-    } catch (InvocationTargetException e) {
-     e.printStackTrace();
-    } catch (NoSuchMethodException e) {
-     e.printStackTrace();
-    } */
-  
-  //must find a better way of doing this
  }
     
  public static void main(String[] args) {

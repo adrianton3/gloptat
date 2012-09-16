@@ -19,14 +19,21 @@
 
 package def;
 
+import java.util.HashMap;
+
 import gui.ConfigGUI;
 import gui.MainGenericGUI;
 import gui.OutputGUI;
 import objfun.Domain;
 import objfun.Interval;
 import objfun.MOF;
+import alg.ConfString;
 import alg.OA;
 import alg.OAParams;
+import alg.ga.GA;
+import alg.ga.GAParams;
+import alg.pso.PSO;
+import alg.pso.PSOParams;
 
 public abstract class MainGeneric {
  //GUI
@@ -48,4 +55,31 @@ public abstract class MainGeneric {
 	public OAParams activeOAParams;
 	
 	public abstract void changeOF(int tmp);
+	
+	public OAParams getOAParams() {
+  HashMap<String,Double> map;
+  map = new ConfString(activeConf.getString()).toMap();
+  
+  /*
+  Class[] c = {GAParams.class,PSOParams.class};
+  try {
+   return (OAParams) c[0].getMethod("fromMap").invoke(new Object[] {});
+  } catch (IllegalArgumentException e) {
+   e.printStackTrace();
+  } catch (SecurityException e) {
+   e.printStackTrace();
+  } catch (IllegalAccessException e) {
+   e.printStackTrace();
+  } catch (InvocationTargetException e) {
+   e.printStackTrace();
+  } catch (NoSuchMethodException e) {
+   e.printStackTrace();
+  } */
+  
+  //must find a better way of doing this
+  if(activeOA instanceof GA) return GAParams.fromMap(map);
+  else if(activeOA instanceof PSO) return PSOParams.fromMap(map);
+  
+  return null;
+ }
 }
