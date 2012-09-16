@@ -44,30 +44,6 @@ public class MainBench extends MainGeneric {
   of.setDom(dom);
  }
  
- void setupGA() { // to be converted to OAFactory
-  oaparams[0] = new GAParams();
-  
-  oa[0] = new GA(of);
-  oa[0].setDom(dom);
-  oa[0].setParams(oaparams[0]);
-  
-  //oa[0].init();
-  
-  conf[0] = new ConfigGUI("Config GA",oaparams[0].toString());
- }
- 
- void setupPSO() { // to be converted to OAFactory
-  oaparams[1] = new PSOParams();
-  
-  oa[1] = new PSO(of);
-  oa[1].setDom(dom);
-  oa[1].setParams(oaparams[1]);
-  
-  //oa[1].init();
-  
-  conf[1] = new ConfigGUI("Config PSO",oaparams[1].toString());
- }
- 
  public void changeOF(int id) {
   of.setFunc(id);
   dom = of.getFunc().dom;
@@ -84,8 +60,8 @@ public class MainBench extends MainGeneric {
   oaparams = new OAParams[2];
   conf = new ConfigGUI[2];
   
-  setupGA();
-  setupPSO();
+  setupOA(0,GA.nam);
+  setupOA(1,PSO.nam);
   
   activeOA = oa[0];
   activeOAParams = oaparams[0];

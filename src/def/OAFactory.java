@@ -30,12 +30,12 @@ import alg.ga.GAParams;
 import alg.pso.PSO;
 import alg.pso.PSOParams;
 
-public class OAFactory {
+public class OAFactory { //no function pointers :(
  public static OA get(String oanam, OAParams oaparams, MOF of, Domain dom) {
   OA oa = null;
   
-  if(oanam.equals("GA") || oanam.equals("Genetic Algorithm")) oa = new GA(of);
-  else if(oanam.equals("PSO") || oanam.equals("Particle Swarm Optimization")) oa = new PSO(of);
+  if(oanam.equals(GA.nam)) oa = new GA(of);
+  else if(oanam.equals(PSO.nam)) oa = new PSO(of);
   else Dbo.out("OAFactory: Unrecognized OA: " + oanam);
   
   oa.setDom(dom);
@@ -47,8 +47,19 @@ public class OAFactory {
  public static OAParams getParams(String oanam, HashMap<String,Double> map) {
   OAParams oaparams = null;
   
-  if(oanam.equals("GA")) oaparams = GAParams.fromMap(map);
-  else if(oanam.equals("PSO")) oaparams = PSOParams.fromMap(map);
+  if(oanam.equals(GA.nam)) oaparams = GAParams.fromMap(map);
+  else if(oanam.equals(PSO.nam)) oaparams = PSOParams.fromMap(map);
+  else Dbo.out("OAFactory: Unrecognized OA: " + oanam);
+  
+  return oaparams;
+ }
+ 
+ public static OAParams getParams(String oanam) {
+  OAParams oaparams = null;
+  
+  if(oanam.equals(GA.nam)) oaparams = new GAParams();
+  else if(oanam.equals(PSO.nam)) oaparams = new PSOParams();
+  else Dbo.out("OAFactory: Unrecognized OA: " + oanam);
   
   return oaparams;
  }

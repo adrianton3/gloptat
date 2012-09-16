@@ -27,7 +27,7 @@ import alg.SimParams;
 
 public class GA implements OA
 {
- public final String nam = "Genetic Algorithm";
+ public final static String nam = "Genetic Algorithm";
  private GAParams par = new GAParams();
  private Ivan[] gv;
  private Ivan[] gn;

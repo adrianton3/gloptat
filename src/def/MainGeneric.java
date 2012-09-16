@@ -57,29 +57,13 @@ public abstract class MainGeneric {
 	public abstract void changeOF(int tmp);
 	
 	public OAParams getOAParams() {
-  HashMap<String,Double> map;
-  map = new ConfString(activeConf.getString()).toMap();
-  
-  /*
-  Class[] c = {GAParams.class,PSOParams.class};
-  try {
-   return (OAParams) c[0].getMethod("fromMap").invoke(new Object[] {});
-  } catch (IllegalArgumentException e) {
-   e.printStackTrace();
-  } catch (SecurityException e) {
-   e.printStackTrace();
-  } catch (IllegalAccessException e) {
-   e.printStackTrace();
-  } catch (InvocationTargetException e) {
-   e.printStackTrace();
-  } catch (NoSuchMethodException e) {
-   e.printStackTrace();
-  } */
-  
-  //must find a better way of doing this
-  if(activeOA instanceof GA) return GAParams.fromMap(map);
-  else if(activeOA instanceof PSO) return PSOParams.fromMap(map);
-  
-  return null;
+		HashMap<String,Double> map = new ConfString(activeConf.getString()).toMap();
+		return OAFactory.getParams(activeOA.getNam(),map);
+ }
+	
+	void setupOA(int index, String nam) {
+ 	oaparams[index] = OAFactory.getParams(nam);
+ 	oa[index] = OAFactory.get(nam,oaparams[index],of,dom);
+ 	conf[index] = new ConfigGUI("Config "+nam,oaparams[index].toString());
  }
 }

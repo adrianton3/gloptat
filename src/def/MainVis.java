@@ -68,31 +68,7 @@ public class MainVis extends MainGeneric {
   of.setFunc(0);
   of.setDom(dom);
  }
- 
- void setupGA() {
-  oaparams[0] = new GAParams();
-  
-  oa[0] = new GA(of);
-  oa[0].setDom(dom);
-  oa[0].setParams(oaparams[0]);
-  
-  //oa[0].init();
-  
-  conf[0] = new ConfigGUI("Config GA",oaparams[0].toString());
- }
- 
- void setupPSO() {
-  oaparams[1] = new PSOParams();
-  
-  oa[1] = new PSO(of);
-  oa[1].setDom(dom);
-  oa[1].setParams(oaparams[1]);
-  
-  //oa[1].init();
-  
-  conf[1] = new ConfigGUI("Config PSO",oaparams[1].toString());
- }
- 
+
  public void changeOF(int id) {
   of.setFunc(id);
   dom = of.getFunc().dom;
@@ -131,9 +107,9 @@ public class MainVis extends MainGeneric {
   oaparams = new OAParams[2];
   conf = new ConfigGUI[2];
   
-  setupGA();
-  setupPSO();
-  
+  setupOA(0,GA.nam);
+  setupOA(1,PSO.nam);
+    
   activeOA = oa[0];
   activeOAParams = oaparams[0];
   activeConf = conf[0];
@@ -142,19 +118,7 @@ public class MainVis extends MainGeneric {
   
   new Thread(new DisplayerThread(d)).start();
  }
-/*
- public OAParams getOAParams() 
- {
-  HashMap<String,Double> map;
-  map = new ConfString(activeConf.getString()).toMap();
-  
-  //must find a better way of doing this
-  if(activeOA instanceof GA) return GAParams.fromMap(map);
-  else if(activeOA instanceof PSO) return PSOParams.fromMap(map);
-  
-  return null;
- }
-*/
+
  public static void main(String[] args) {
   MainVis instance = new MainVis();
   instance.start();
