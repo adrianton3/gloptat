@@ -17,20 +17,20 @@ At the moment implementations for Genetic Algorithms and Particle Swarm Optimiza
 For Genetic Algorithms:
 -----------------------
 
-. Tournament and Roulette wheel selection
-. Singlepoint, 2-point and uniform crossover
-. Uniform mutation
-. Population reduction
-. Random immigrants
-. Inversion
-. Biased crossover (inheriting the significant part of a chromosome from the better parent)
-. Non-uniform mutation with dynamic parameters
-. Growth (a hillclimbing step each generation)
-. Some methods to adjust selection pressure at runtime ("Damping functions")
+* Tournament and Roulette wheel selection
+* Singlepoint, 2-point and uniform crossover
+* Uniform mutation
+* Population reduction
+* Random immigrants
+* Inversion
+* Biased crossover (inheriting the significant part of a chromosome from the better parent)
+* Non-uniform mutation with dynamic parameters
+* Growth (a hillclimbing step each generation)
+* Some methods to adjust selection pressure at runtime ("Damping functions")
 
 For Particle Swarm Optimization:
 --------------------------------
 
-. Neighbor networks
-. Population reduction
-. Random immigrants
+* Neighbor networks
+* Population reduction
+* Random immigrants
