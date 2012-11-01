@@ -56,7 +56,7 @@ public class MainBench extends MainGeneric {
   
   setupOF();
   
-  oa = new OA[2];
+  oa = new OA[2]; //should be created on demand and run just once
   oaparams = new OAParams[2];
   conf = new ConfigGUI[2];
   

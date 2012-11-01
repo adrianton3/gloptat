@@ -24,13 +24,15 @@ import objfun.ObjectiveFunction;
 import alg.OA;
 import alg.OAParams;
 import alg.SimParams;
-
+/* lots of work here:
+ * + need to parametrize everything
+ */
 public class GA implements OA
 {
  public final static String nam = "Genetic Algorithm";
  private GAParams par = new GAParams();
- private Ivan[] gv;
- private Ivan[] gn;
+ private Individual[] gv;
+ private Individual[] gn;
  private double[] fit;
  private Domain dom;
  private ObjectiveFunction ifit;
@@ -44,8 +46,8 @@ public class GA implements OA
 //------------------------------------------------------------------------------
  private void alloc()
  {
-  gv = new Ivan[par.niv];
-  gn = new Ivan[par.niv];
+  gv = new Individual[par.niv];
+  gn = new Individual[par.niv];
   fit = new double[par.niv];
  }
 //------------------------------------------------------------------------------
@@ -70,7 +72,7 @@ public class GA implements OA
 
   int i;
   for(i=0;i<par.niv;i++) {
-   gv[i] = new Ivan(dom);
+   gv[i] = new Individual(dom);
    gn[i] = null; //new Ivan(dom);
   } //?
   calcFit();
@@ -81,7 +83,7 @@ public class GA implements OA
   alloc();
   int i;
   for(i=0;i<par.niv;i++) {
-   gv[i] = new Ivan(dom);
+   gv[i] = new Individual(dom);
    gv[i].fromArray(ipop[i]);
   }
  }
@@ -170,12 +172,12 @@ public class GA implements OA
    calcFit(i);
  }
 //------------------------------------------------------------------------------
- private void elitism()
+ private void elitism() //this should be given as a parameter
  {
   gn[0] = gv[getBestI()];//.copy();
  }
 //------------------------------------------------------------------------------
- private int select_tournament(double p)
+ private int select_tournament(double p) //this should be given as a parameter
  {
   int nsel = (int)(p*par.niv);
   int i = 0, r, ret = -1;
@@ -226,7 +228,7 @@ public class GA implements OA
   return afit;
  }
 //------------------------------------------------------------------------------
- private int select_roulette()
+ private int select_roulette() //this should be given as a parameter
  {
   int i;
   double sum = 0, ran, tmp=0;
@@ -248,7 +250,7 @@ public class GA implements OA
   return -1;
  }
 //------------------------------------------------------------------------------
- private int select()
+ private int select() //this shouldn't exist
  {
   switch(par.selection_type)
   {
@@ -277,19 +279,19 @@ public class GA implements OA
   return mark;
  }
 //------------------------------------------------------------------------------
- private void renew()
+ private void renew() //this should be given as a parameter
  {
   boolean[] mark = markLast(par.nnew);
   int i;
   for(i=0;i<par.niv;i++)
    if(mark[i])
    {
-    gv[i] = new Ivan(dom);
+    gv[i] = new Individual(dom);
     calcFit(i);
    }
  }
 //------------------------------------------------------------------------------
- private void drop()
+ private void drop() //this should be given as a parameter
  {
   if(nactive > par.popmin)
   {
@@ -302,7 +304,7 @@ public class GA implements OA
   }
  }
 //------------------------------------------------------------------------------
- private void invert()
+ private void invert() //this should be given as a parameter
  {
   boolean[] mark = markLast(par.ndrop);
   int i;
@@ -314,10 +316,11 @@ public class GA implements OA
    }
  }
 //------------------------------------------------------------------------------
- private Ivan crossover(int i1, int i2)
+ private Individual crossover(int i1, int i2)
  {
   if(Math.random() < par.crossover_bias)
   {
+  	//this is wrong on so many levels; should be given as a parameter
    if(fit[i1] > fit[i2])
     switch(par.crossover_type)
     {
@@ -353,10 +356,10 @@ public class GA implements OA
   return null;
  }
 //------------------------------------------------------------------------------
- private void grow(int i)
+ private void grow(int i) //this should be given as a parameter
  {
   fit[i] = ifit.f(gn[i].toArray());
-  Ivan iv = mutate(i);
+  Individual iv = mutate(i);
   double ivf = ifit.f(iv.toArray());
   
   if(ivf > fit[i])
@@ -366,7 +369,7 @@ public class GA implements OA
   }
  }
 //------------------------------------------------------------------------------
- private Ivan mutate(int i)
+ private Individual mutate(int i) //this should be given as a parameter
  {
   switch(par.mutation_type)
   {
@@ -380,7 +383,7 @@ public class GA implements OA
  {
   int i;
   int i1, i2;
-  
+  //every call here should actually call functions given as parameters
   if(!par.grow) calcFit();
 
   if(par.ndrop > 0) drop();

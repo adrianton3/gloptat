@@ -218,7 +218,7 @@ public boolean[] getActive()
   return maxi;
  }
 //------------------------------------------------------------------------------
- private void renew() {
+ private void renew() { //this sould be given as a parameter
   boolean[] mark = markLast(par.nnew);
   int i;
   for(i=0;i<par.np;i++)
@@ -229,7 +229,7 @@ public boolean[] getActive()
    }
  }
 //------------------------------------------------------------------------------
- private void drop() {
+ private void drop() { //this sould be given as a parameter
   if(nactive > par.popmin) {
    nactive = Math.max(nactive-par.ndrop,par.popmin);
    boolean[] mark = markLast(par.ndrop); //...

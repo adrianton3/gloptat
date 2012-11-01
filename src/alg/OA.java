@@ -34,7 +34,7 @@ public interface OA
  double[] getBest();
  double getMeanFit();
  int getNapel();
- void calcFit();
+ //void calcFit();
  //void init();
  void step();
  void alg();

@@ -23,10 +23,11 @@ public class MOF implements ObjectiveFunction {
  Domain dom;
  public double minc, maxc;
  private WOF func;
- private int ncalls;
+ private int nCalls;
 //------------------------------------------------------------------------------
  public void setFunc(int idnr) {
   switch(idnr) {
+  //why isn't domain updated here?
    case 0: func = new F_DeJong(); break;
    case 1: func = new F_Rastrigin(); break;
    case 2: func = new F_Michalewicz(); break;
@@ -38,6 +39,7 @@ public class MOF implements ObjectiveFunction {
  }
 //------------------------------------------------------------------------------
  public void setDom(Domain dom) {
+ 	//why does this function exist?
   this.dom = dom;
  }
 //------------------------------------------------------------------------------
@@ -74,15 +76,15 @@ public class MOF implements ObjectiveFunction {
  }
 //------------------------------------------------------------------------------
  public void resetNCalls() {
-  ncalls = 0;
+  nCalls = 0;
  }
 //------------------------------------------------------------------------------
  public int getNCalls() {
-  return ncalls;
+  return nCalls;
  }
 //------------------------------------------------------------------------------
  public double f(double[] p) {
-  ncalls++;
+  nCalls++;
   
   if(dom.in(p)) return func.f(p);
   else return -10000;
