@@ -30,7 +30,10 @@ import alg.ga.GAParams;
 import alg.pso.PSO;
 import alg.pso.PSOParams;
 
-public class OAFactory { //no function pointers :(
+/**
+ * @deprecated  Replaced by the new FactoryLoader and Factory
+ */
+public class OAFactory {
  public static OA get(String oanam, OAParams oaparams, MOF of, Domain dom) {
   OA oa = null;
   

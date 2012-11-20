@@ -27,7 +27,7 @@ public class MOF implements ObjectiveFunction {
 //------------------------------------------------------------------------------
  public void setFunc(int idnr) {
   switch(idnr) {
-  //why isn't domain updated here?
+  //domain should be updated here
    case 0: func = new F_DeJong(); break;
    case 1: func = new F_Rastrigin(); break;
    case 2: func = new F_Michalewicz(); break;
@@ -39,7 +39,7 @@ public class MOF implements ObjectiveFunction {
  }
 //------------------------------------------------------------------------------
  public void setDom(Domain dom) {
- 	//why does this function exist?
+ 	//this should not exist
   this.dom = dom;
  }
 //------------------------------------------------------------------------------

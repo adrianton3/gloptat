@@ -30,12 +30,12 @@ import alg.SimParams;
 public class GA implements OA
 {
  public final static String nam = "Genetic Algorithm";
- private GAParams par = new GAParams();
+ private GAParams par = new GAParams(); //final
  private Individual[] gv;
  private Individual[] gn;
  private double[] fit;
- private Domain dom;
- private ObjectiveFunction ifit;
+ private Domain dom; //final
+ private ObjectiveFunction ifit; //final
  private int nactive;
  private double genn;
 //------------------------------------------------------------------------------

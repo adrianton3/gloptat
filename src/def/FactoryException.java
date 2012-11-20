@@ -17,36 +17,14 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package bench;
+package def;
 
-import def.Dbo;
-import alg.OA;
-import alg.SimResult;
-
-public class GOThread implements Runnable {
- final Dispatcher outer;
- final int idnr;
- final OA oa;
- final int nTrials;
-
- GOThread(Dispatcher outer, int idnr, OA oa, int ntrials) {
-  this.outer = outer;
-  this.idnr = idnr;
-  this.oa = oa; //oa needs to be instantiated every time and should not be passed as a parameter
-  //instead pass a factory class for the specific oa
-  this.nTrials = ntrials;
+public class FactoryException extends Exception {
+	final String message;
+ final Exception exception;
+ 
+	FactoryException(String message, Exception exception) {
+  this.message= message;
+  this.exception = exception;
  }
-
- public void run() {
-  SimResult[] rez = new SimResult[nTrials];
-  int i;
-  for(i=0;i<nTrials;i++) {
-   oa.resetNapel();
-   oa.randomize();
-   oa.alg();
-   rez[i] = new SimResult(oa.getBestFit());
-  }
-
-  outer.inc(idnr, rez);
- } 
 }

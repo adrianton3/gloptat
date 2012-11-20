@@ -21,8 +21,7 @@ package alg;
 
 import objfun.Domain;
 
-public interface OA
-{
+public interface OA {
  void setDom(Domain dom);
  void randomize();
  //void alloc();
@@ -34,7 +33,6 @@ public interface OA
  double[] getBest();
  double getMeanFit();
  int getNapel();
- //void calcFit();
  //void init();
  void step();
  void alg();

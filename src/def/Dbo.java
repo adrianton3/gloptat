@@ -21,11 +21,19 @@ package def;
 
 public class Dbo {
  public static boolean on = true;
+ public static boolean err = true;
  static long lasttime = System.nanoTime();
 
  public static void out(String istr) {
-  //if(on)
+  //if(on) //bypass? why?
    System.out.println(istr);
+  //and maybe some log in some file
+ }
+ 
+ public static void err(String istr) {
+  if(err)
+   System.out.println("Err: " + istr);
+  //and maybe some error log
  }
 
  public static void start() {

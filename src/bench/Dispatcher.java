@@ -34,8 +34,8 @@ public class Dispatcher {
  final OAParams oaparams;
  final MOF of;
  final Domain dom;
- final int nthreads = 4;
- final int trialsperthread;
+ final int nThreads = 8;
+ final int trialsPerThread;
  
  int threads_res = 0;
  
@@ -47,25 +47,25 @@ public class Dispatcher {
   this.oaparams = oaparams;
   this.of = of;
   this.dom = dom;
-  this.trialsperthread = trialsperthread;
+  this.trialsPerThread = trialsperthread;
  }
  
  synchronized void inc(int idnr, SimResult[] sr) {
  	int i;
   for(i=0;i<sr.length;i++) {
-   this.sr[trialsperthread*idnr + i] = sr[i];
+   this.sr[trialsPerThread*idnr + i] = sr[i];
   }
 	 
 	 threads_res++;
-  if(threads_res >= nthreads) notify();
+  if(threads_res >= nThreads) notify();
  }
  
  public void dispatch() {
-	sr = new SimResult[trialsperthread*nthreads]; 
+	sr = new SimResult[trialsPerThread*nThreads]; 
 	
  int i;
- for(i=0;i<nthreads;i++) {
-  new Thread(new GOThread(this,i,OAFactory.get(oanam,oaparams,of,dom),trialsperthread)).start();
+ for(i=0;i<nThreads;i++) {
+  new Thread(new GOThread(this,i,OAFactory.get(oanam,oaparams,of,dom),trialsPerThread)).start();
  }
   
  synchronized (this) {
