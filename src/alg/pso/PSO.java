@@ -19,50 +19,47 @@
 
 package alg.pso;
 
+import java.util.ArrayList;
+
 import alg.OA;
 import alg.OAParams;
 import alg.SimParams;
+import alg.SimResults;
+import alg.Snapshot;
 import objfun.Domain;
 import objfun.ObjectiveFunction;
 
 public class PSO implements OA
 {
- public final static String nam = "Particle Swarm Optimization";
- private PSOParams par = new PSOParams();
- private Domain dom;
+ public final static String name = "Particle Swarm Optimization";
+ private final ObjectiveFunction of;
+ private final PSOParams par;
+ private final Domain dom;
+ 
  private Particle[] part;
  private Particle[] best;
  private double[] fit, bfit;
- private ObjectiveFunction ifit;
+ 
  private int nactive;
  private SocialNetwork sn;
-//------------------------------------------------------------------------------
- public PSO(ObjectiveFunction iifit)
- {
-  ifit = iifit;
+
+ public PSO(ObjectiveFunction of, PSOParams par) {
+  this.of = of;
+  this.par = par;
+  this.dom = of.getDom();
+  
+  alloc();
+  randomize();
  }
-//------------------------------------------------------------------------------
- public void setDom(Domain dom)
- {
-  this.dom = dom;
- }
-//------------------------------------------------------------------------------
- private void alloc()
- {
+
+ private void alloc() {
   part = new Particle[par.np];
   best = new Particle[par.np];
   fit = new double[par.np];
   bfit = new double[par.np];
   nactive = par.np;
  }
-//------------------------------------------------------------------------------
- public void setParams(OAParams ipar)
- {
-  par = (PSOParams)ipar;
-  alloc();
-  randomize();
- }
-//------------------------------------------------------------------------------
+
  public void randomize() {
   int i;
   for(i=0;i<par.np;i++) {
@@ -89,7 +86,16 @@ public class PSO implements OA
     sn = null;
   }
  }
-//------------------------------------------------------------------------------
+ 
+	private double[] getFit() {
+		double[] ret = new double[par.np];
+
+		for(int i = 0; i < par.np; i++)
+			ret[i] = fit[i];
+
+		return ret;
+	}
+
 public void setPop(double[][] ipop)
  {
   par.np = ipop.length;
@@ -142,19 +148,19 @@ public boolean[] getActive()
   return best[besti].toArray();
  }
 //------------------------------------------------------------------------------
- public int getNapel()
+ public int getNCalls()
  {
-  return ifit.getNCalls();
+  return of.getNCalls();
  }
 //------------------------------------------------------------------------------
- public void resetNapel()
+ public void resetNCalls()
  {
-  ifit.resetNCalls();
+  of.resetNCalls();
  }
 //------------------------------------------------------------------------------
  private void calcFit(int i)
  {
-  fit[i] = ifit.f(part[i].toArray());
+  fit[i] = of.f(part[i].toArray());
   bfit[i] = fit[i];
  }
 //------------------------------------------------------------------------------
@@ -249,7 +255,7 @@ public boolean[] getActive()
     else
      part[i].updateV(part[maxMark(sn.getLine(i))],best[i]);
 
-    fit[i] = ifit.f(part[i].toArray());
+    fit[i] = of.f(part[i].toArray());
     if(fit[i] > bfit[i]) {
      best[i] = part[i].copy();
      bfit[i] = fit[i];
@@ -266,23 +272,22 @@ public boolean[] getActive()
   else if(par.ndrop > 0)renew();
  }
 //------------------------------------------------------------------------------
- public void alg() {
-  int i;
-  i = 0;
-  while(getBestFit() < par.target && i < par.niter) {
-   step();
-   i++;
-  }
- }
-//------------------------------------------------------------------------------
- public String toString() {
-  String ret = ""; int i;
-  for(i=0;i<par.np;i++)
-   ret += part[i].toString() + ";";
-  return ret;
- }
-//------------------------------------------------------------------------------
- public String getNam() {
-  return nam;
- }
+	public SimResults alg() {
+		ArrayList<Snapshot> sr = new ArrayList<Snapshot>();
+		
+		int i = 0;
+		while(getBestFit() < par.target && i < par.niter) {
+			Snapshot ss = new Snapshot(getPop(), getFit(), of.getNCalls());
+			sr.add(ss);
+
+			step();
+			i++;
+		}
+
+		return new SimResults(sr);
+	}
+
+	public String getName() {
+		return name;
+	}
 }

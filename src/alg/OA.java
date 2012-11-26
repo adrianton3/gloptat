@@ -19,24 +19,8 @@
 
 package alg;
 
-import objfun.Domain;
-
 public interface OA {
- void setDom(Domain dom);
- void randomize();
- //void alloc();
- //void setPop(double[][] ipop);
- void setParams(OAParams oaparams);
- double[][] getPop();
- boolean[] getActive();
- double getBestFit();
- double[] getBest();
- double getMeanFit();
- int getNapel();
- //void init();
- void step();
- void alg();
- void resetNapel();
- String getNam();
-}
+	SimResults alg();
 
+	String getName();
+}

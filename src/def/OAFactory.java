@@ -19,51 +19,13 @@
 
 package def;
 
-import java.util.HashMap;
-
-import objfun.Domain;
-import objfun.MOF;
+import objfun.ObjectiveFunction;
+import alg.ConfString;
 import alg.OA;
 import alg.OAParams;
-import alg.ga.GA;
-import alg.ga.GAParams;
-import alg.pso.PSO;
-import alg.pso.PSOParams;
 
-/**
- * @deprecated  Replaced by the new FactoryLoader and Factory
- */
-public class OAFactory {
- public static OA get(String oanam, OAParams oaparams, MOF of, Domain dom) {
-  OA oa = null;
-  
-  if(oanam.equals(GA.nam)) oa = new GA(of);
-  else if(oanam.equals(PSO.nam)) oa = new PSO(of);
-  else Dbo.out("OAFactory: Unrecognized OA: " + oanam);
-  
-  oa.setDom(dom);
-  oa.setParams(oaparams);
-  
-  return oa;
- }
- 
- public static OAParams getParams(String oanam, HashMap<String,Double> map) {
-  OAParams oaparams = null;
-  
-  if(oanam.equals(GA.nam)) oaparams = GAParams.fromMap(map);
-  else if(oanam.equals(PSO.nam)) oaparams = PSOParams.fromMap(map);
-  else Dbo.out("OAFactory: Unrecognized OA: " + oanam);
-  
-  return oaparams;
- }
- 
- public static OAParams getParams(String oanam) {
-  OAParams oaparams = null;
-  
-  if(oanam.equals(GA.nam)) oaparams = new GAParams();
-  else if(oanam.equals(PSO.nam)) oaparams = new PSOParams();
-  else Dbo.out("OAFactory: Unrecognized OA: " + oanam);
-  
-  return oaparams;
- }
+public abstract class OAFactory {
+	public abstract String getName();
+	public abstract OA getOA(ObjectiveFunction of, OAParams oaParams);
+	public abstract OAParams getOAParams(ConfString cs);
 }

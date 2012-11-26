@@ -23,28 +23,22 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Timer;
 
-import alg.ConfString;
 import alg.OA;
-import alg.ga.GA;
-import alg.ga.GAParams;
-import alg.pso.PSOParams;
-
-import def.Dbo;
-import def.Fasten;
+import alg.SimResults;
 import def.MainVis;
 
 class ActRun implements ActionListener {
- MainVis outer;
- 
- ActRun(MainVis outer) {
-  this.outer = outer;
- }
- 
- public void actionPerformed(ActionEvent e) {
-  Timer timer = new Timer();
+	MainVis outer;
 
-  outer.activeOAParams = outer.getOAParams();  
-  outer.activeOA.setParams(outer.activeOAParams);
-  timer.scheduleAtFixedRate(new AutoStep(outer.activeOA,outer.d,50), 0, 100);
- }
+	ActRun(MainVis outer) {
+		this.outer = outer;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		OA oa = outer.getOA(outer.getOAParams());
+		SimResults simResults = oa.alg();
+
+		Timer timer = new Timer();
+		timer.scheduleAtFixedRate(new AutoStep(simResults, outer.displayer), 0, 100);
+	}
 }

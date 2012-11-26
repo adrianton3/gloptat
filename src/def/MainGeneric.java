@@ -19,51 +19,64 @@
 
 package def;
 
-import java.util.HashMap;
-
 import gui.ConfigGUI;
 import gui.MainGenericGUI;
 import gui.OutputGUI;
-import objfun.Domain;
-import objfun.Interval;
+
+import java.util.ArrayList;
+
 import objfun.MOF;
 import alg.ConfString;
 import alg.OA;
 import alg.OAParams;
-import alg.ga.GA;
-import alg.ga.GAParams;
-import alg.pso.PSO;
-import alg.pso.PSOParams;
+import alg.ga.GAFactory;
+import alg.pso.PSOFactory;
 
 public abstract class MainGeneric {
- //GUI
+	// GUI
 	public MainGenericGUI se;
 	public OutputGUI con;
-	public ConfigGUI[] conf; 
+	public ConfigGUI[] conf;
 	public ConfigGUI activeConf;
-	
-	//Objective function
+
+	// Objective function
 	public MOF of;
-	
-	//Search space
-	public Domain dom = new Domain(new Interval[] {new Interval(-5.12,5.12), new Interval(-5.12,5.12)});
-	
-	//Optimization algorithms
-	public OA[] oa;
-	public OAParams[] oaparams;
-	public OA activeOA;
-	public OAParams activeOAParams;
-	
+
+	// Optimization algorithms
+	public OAFactory[] oaFactory;
+	public OAFactory activeOAFactory;
+
 	public abstract void changeOF(int tmp);
-	
+
 	public OAParams getOAParams() {
-		HashMap<String,Double> map = new ConfString(activeConf.getString()).toMap();
-		return OAFactory.getParams(activeOA.getNam(),map);
- }
+		return activeOAFactory.getOAParams(new ConfString(activeConf.getString()));
+	}
+
+	public OA getOA(OAParams oaParams) {
+		return activeOAFactory.getOA(of, oaParams);
+	}
+
+	protected void tmp() { //temporary solution
+		oaFactory = new OAFactory[]{new GAFactory(), new PSOFactory() };
+		
+		for(int i=0;i<oaFactory.length;i++)
+			conf[i] = new ConfigGUI("Config " + oaFactory[i].getName(), 
+				oaFactory[i].getOAParams(new ConfString("")).toString());
+		
+		activeConf = conf[0];
+		activeOAFactory = oaFactory[0];
+	}
 	
-	void setupOA(int index, String nam) {
- 	oaparams[index] = OAFactory.getParams(nam);
- 	oa[index] = OAFactory.get(nam,oaparams[index],of,dom);
- 	conf[index] = new ConfigGUI("Config "+nam,oaparams[index].toString());
- }
+	private void loadFactories() {
+		ArrayList<OAFactory> factory = FactoryLoader.getFactories("factories/",
+				OAFactory.class);
+
+		int i = 0;
+		for(OAFactory oaf : factory) {
+			oaFactory[i] = oaf;
+			conf[i] = new ConfigGUI("Config " + oaFactory[i].getName(), 
+					oaFactory[i].getOAParams(new ConfString("")).toString());
+			i++;
+		}
+	}
 }

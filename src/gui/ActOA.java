@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import def.MainGeneric;
-import def.MainVis;
 
 class ActOA implements ActionListener {
  MainGeneric outer;
@@ -35,8 +34,7 @@ class ActOA implements ActionListener {
  public void actionPerformed(ActionEvent e) {
   int tmp = outer.se.getSelectedOAIndex();
   
-  outer.activeOA = outer.oa[tmp];
-  outer.activeOAParams = outer.oaparams[tmp];
+  outer.activeOAFactory = outer.oaFactory[tmp];
   outer.activeConf = outer.conf[tmp];
  }
 }

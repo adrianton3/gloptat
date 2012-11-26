@@ -19,38 +19,29 @@
 
 package gui;
 
+import java.util.Iterator;
 import java.util.TimerTask;
 
-import alg.OA;
-
+import alg.SimResults;
+import alg.Snapshot;
 import plotter.Displayer;
 
-import def.MainVis;
+public class AutoStep extends TimerTask {
+	private final Iterator<Snapshot> iterator;
+	private final Displayer displayer;
 
-public class AutoStep extends TimerTask
-{
- Displayer d;
- OA ao;
- 
- int titer = 0;
- int titerlim = 30;
- 
- AutoStep(OA ao, Displayer d, int titerlim)
- {
-  this.ao = ao;
-  this.d = d;
-  this.titerlim = titerlim;
- }
- 
- public void run()
- {
-  ao.step();
-  d.pointers(ao.getPop());
-  d.pointersActive(ao.getActive());
-  
-  d.needsrepaint = true;
-  
-  titer++;
-  if(titer > titerlim) this.cancel();
- }
+	AutoStep(SimResults simResults, Displayer displayer) {
+		this.iterator = simResults.iterator();
+		this.displayer = displayer;
+	}
+
+	public void run() {
+		displayer.pointers(iterator.next().getPop());
+		// displayer.pointersActive(ao.getActive()); //attribute instead of active
+
+		displayer.needsRepaint();
+
+		if(!iterator.hasNext())
+			this.cancel();
+	}
 }

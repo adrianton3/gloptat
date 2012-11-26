@@ -20,73 +20,72 @@
 package objfun;
 
 public class MOF implements ObjectiveFunction {
- Domain dom;
- public double minc, maxc;
- private WOF func;
- private int nCalls;
-//------------------------------------------------------------------------------
- public void setFunc(int idnr) {
-  switch(idnr) {
-  //domain should be updated here
-   case 0: func = new F_DeJong(); break;
-   case 1: func = new F_Rastrigin(); break;
-   case 2: func = new F_Michalewicz(); break;
-  }
- }
-//------------------------------------------------------------------------------
- public WOF getFunc() {
-  return func;
- }
-//------------------------------------------------------------------------------
- public void setDom(Domain dom) {
- 	//this should not exist
-  this.dom = dom;
- }
-//------------------------------------------------------------------------------
- private double vod(double x, double y) { 
-  return func.f(new double[] {x,y});
- }
-//------------------------------------------------------------------------------
- public double[][] compute(int rezx, int rezy) {
-  double[][] ret = new double[rezx][rezy];
-  double pasx, pasy;
-  double px, py;
-  pasx = (dom.d[0].r - dom.d[0].l) / rezx;
-  pasy = (dom.d[1].r - dom.d[1].l) / rezy;
-  maxc = -10000; minc = 10000;
-  int i, j;
+	private WOF func;
+	private Domain dom;
+	private int nCalls;
+	public double minc, maxc;
 
-  px = dom.d[0].l;
-  for(i=0;i<rezx;i++)
-  {
-   py = dom.d[0].l;
-   for(j=0;j<rezy;j++)
-   {
-    ret[i][j] = vod(px,py);
-    
-    if(ret[i][j] < minc) minc = ret[i][j];
-    else if(ret[i][j] > maxc) maxc = ret[i][j];
-    
-    py += pasy;
-   }
-   px += pasx;
-  }
-  
-  return ret;
- }
-//------------------------------------------------------------------------------
- public void resetNCalls() {
-  nCalls = 0;
- }
-//------------------------------------------------------------------------------
- public int getNCalls() {
-  return nCalls;
- }
-//------------------------------------------------------------------------------
- public double f(double[] p) {
-  nCalls++;
-  
-  if(dom.in(p)) return func.f(p);
-  else return -10000;
- }
+	public void setFunc(int idnr) { //not the prettiest sight
+		switch(idnr) {
+			case 0: func = new F_DeJong(); break;
+			case 1: func = new F_Rastrigin(); break;
+			case 2: func = new F_Michalewicz(); break;
+		}
+		dom = func.getDom();
+	}
+
+	public Domain getDom() {
+		return dom;
+	}
+
+	public WOF getFunc() {
+		return func;
+	}
+
+	private double vod(double x, double y) {
+		return func.f(new double[] { x, y });
+	}
+
+	public double[][] compute(int rezx, int rezy) {
+		double[][] ret = new double[rezx][rezy];
+		double pasx, pasy;
+		double px, py;
+
+		pasx = (dom.d[0].r - dom.d[0].l) / rezx;
+		pasy = (dom.d[1].r - dom.d[1].l) / rezy;
+		maxc = -10000;
+		minc = 10000;
+		int i, j;
+
+		px = dom.d[0].l;
+		for(i = 0; i < rezx; i++) {
+			py = dom.d[0].l;
+			for(j = 0; j < rezy; j++) {
+				ret[i][j] = vod(px, py);
+
+				if(ret[i][j] < minc) minc = ret[i][j];
+				else if(ret[i][j] > maxc)	maxc = ret[i][j];
+
+				py += pasy;
+			}
+			px += pasx;
+		}
+
+		return ret;
+	}
+
+	public void resetNCalls() {
+		nCalls = 0;
+	}
+
+	public int getNCalls() {
+		return nCalls;
+	}
+
+	public double f(double[] p) {
+		nCalls++;
+		
+		if(dom.in(p)) return func.f(p);
+		else return -10000;
+	}
 }

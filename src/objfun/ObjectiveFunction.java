@@ -20,7 +20,8 @@
 package objfun;
 
 public interface ObjectiveFunction {
- double f(double[] iv);
- int getNCalls();
- void resetNCalls();
+	Domain getDom();
+	double f(double[] iv);
+	int getNCalls();
+	void resetNCalls();
 }

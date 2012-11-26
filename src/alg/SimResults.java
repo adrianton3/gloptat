@@ -17,14 +17,39 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package def;
+package alg;
 
-import objfun.ObjectiveFunction;
-import alg.OA;
-import alg.OAParams;
+import java.util.ArrayList;
+import java.util.Iterator;
 
-public abstract class Factory {
-	abstract String getName();
-	abstract OA getOA(ObjectiveFunction of, OAParams oaParams);
-	abstract OAParams getOAParams();
+public class SimResults implements Iterable<Snapshot> {
+	final ArrayList<Snapshot> simulation;
+
+	public SimResults(ArrayList<Snapshot> simulation) {
+		this.simulation = simulation;
+	}
+	
+	public double getBestFit() {
+		double max = simulation.get(0).getBestFit();
+		
+		for(Snapshot ss: simulation) {
+			double tmp = ss.getBestFit();
+			if(tmp > max)
+				max = tmp;
+		}
+		
+		return max;
+	}
+
+	public int getNIter() {
+		return simulation.size();
+	}
+
+	public Snapshot getSnapShot(int iter) {
+		return simulation.get(iter);
+	}
+
+	public Iterator<Snapshot> iterator() {
+		return new SimResultsIterator(simulation);
+	}
 }

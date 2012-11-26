@@ -19,10 +19,9 @@
 
 package alg;
 
-public class SimParams
-{
- public int niter = 10;
- public double target = 10000;
- public double stag = 0.01;
- public boolean forcerandom = true;
+public class SimParams {
+	public int niter = 10;
+	public double target = 10000;
+	public double stag = 0.01;
+	public boolean forcerandom = true;
 }

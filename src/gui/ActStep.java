@@ -21,26 +21,22 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
-
-import alg.OA;
 
 import def.MainVis;
 
-class ActStep implements ActionListener
-{
- MainVis outer;
- 
- ActStep(MainVis outer)
- {
-  this.outer = outer;
- }
- 
- public void actionPerformed(ActionEvent e) 
- {
-  outer.activeOA.step();
-  outer.d.pointers(outer.activeOA.getPop());
-  //pointer size, color and status
-  outer.d.needsrepaint = true;
- }
+class ActStep implements ActionListener {
+	MainVis outer;
+
+	ActStep(MainVis outer) {
+		this.outer = outer;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		if(outer.iterator.hasNext()) {
+			outer.displayer.pointers(outer.iterator.next().getPop());
+			// displayer.pointersActive(ao.getActive()); //attribute instead of active
+
+			outer.displayer.needsRepaint();
+		}
+	}
 }

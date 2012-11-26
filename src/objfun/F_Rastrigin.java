@@ -20,23 +20,21 @@
 package objfun;
 
 class F_Rastrigin extends WOF {
- F_Rastrigin() {
- 	dom = Domain.fromInterval(new Interval(-5.12,5.12),2);
- }
+	F_Rastrigin() {
+		dom = Domain.fromInterval(new Interval(-5.12, 5.12), 2);
+	}
 
- public String toString() { return "Rastrigin"; }
- /*
- double f(double[] inp) {
-  return -(20 + inp[0]*inp[0] - 10 * Math.cos(2*Math.PI*inp[0]) +
-                inp[1]*inp[1] - 10 * Math.cos(2*Math.PI*inp[1]));
- }*/
- 
- double f(double[] inp) {
-  double tmp = 0;
-  int i;
-  for(i=0;i<inp.length;i++) {
-  	tmp += inp[i]*inp[i] - 10 * Math.cos(2*Math.PI*inp[i]);
-  }
- 	return -(10*inp.length + tmp);
- }
+	public String toString() {
+		return "Rastrigin";
+	}
+
+	double f(double[] inp) {
+		double tmp = 0;
+
+		for(int i = 0; i < inp.length; i++) {
+			tmp += inp[i] * inp[i] - 10 * Math.cos(2 * Math.PI * inp[i]);
+		}
+
+		return -(10 * inp.length + tmp);
+	}
 }

@@ -21,7 +21,7 @@ package objfun;
 
 public class F_Michalewicz extends WOF {
  F_Michalewicz() {
- 	dom = Domain.fromInterval(new Interval(0,Math.PI),2);
+ 	dom = Domain.fromInterval(new Interval(0,Math.PI), 2);
  }
 
  public String toString() { return "Michalewicz"; }

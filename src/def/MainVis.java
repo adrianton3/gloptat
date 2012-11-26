@@ -23,24 +23,23 @@ import gui.ConfigGUI;
 import gui.MainVisGUI;
 import gui.OutputGUI;
 
-import java.util.HashMap;
+import java.util.Iterator;
 
+import objfun.Domain;
 import objfun.MOF;
 import plotter.Displayer;
 import plotter.DisplayerThread;
-import alg.ConfString;
-import alg.OA;
-import alg.OAParams;
-import alg.ga.GA;
-import alg.ga.GAParams;
-import alg.pso.PSO;
-import alg.pso.PSOParams;
+import alg.Snapshot;
 
 public class MainVis extends MainGeneric {
- public Displayer d;
-
+ public Displayer displayer;
+ Domain dom;
+ 
+ public Iterator<Snapshot> iterator;
+ 
  void setupDisplayer() {
-  d = new Displayer();
+ 	Domain dom = of.getDom();
+  displayer = new Displayer();
   
   int tmprx, tmpry;
   double dx, dy;
@@ -57,21 +56,20 @@ public class MainVis extends MainGeneric {
    tmprx = (int)(tmpry * (dx/dy));
   }
   
-  d.setDom(dom);
-  d.setVal(of.compute(tmprx,tmpry));
-  d.minc = of.minc;
-  d.maxc = of.maxc;
+  displayer.setDom(dom);
+  displayer.setVal(of.compute(tmprx,tmpry));
+  displayer.minc = of.minc;
+  displayer.maxc = of.maxc;
  }
  
  void setupOF() {
   of = new MOF();
   of.setFunc(0);
-  of.setDom(dom);
  }
 
  public void changeOF(int id) {
   of.setFunc(id);
-  dom = of.getFunc().dom;
+  dom = of.getDom();
   
   int tmprx, tmpry;
   double dx, dy;
@@ -88,12 +86,12 @@ public class MainVis extends MainGeneric {
    tmprx = (int)(tmpry * (dx/dy));
   }
   
-  d.setDom(dom);
-  d.setVal(of.compute(tmprx,tmpry));
-  d.minc = of.minc;
-  d.maxc = of.maxc;
+  displayer.setDom(dom);
+  displayer.setVal(of.compute(tmprx,tmpry));
+  displayer.minc = of.minc;
+  displayer.maxc = of.maxc;
   
-  d.needsrepaint = true;
+  displayer.needsRepaint();
  }
  
  void start() {
@@ -102,21 +100,22 @@ public class MainVis extends MainGeneric {
   con = new OutputGUI();
   
   setupOF();
-  
-  oa = new OA[2];
-  oaparams = new OAParams[2];
+    
+  oaFactory = new OAFactory[2];
   conf = new ConfigGUI[2];
   
-  setupOA(0,GA.nam);
-  setupOA(1,PSO.nam);
+  tmp();
+  
+  //setupOA(0,GA.nam);
+  //setupOA(1,PSO.nam);
     
-  activeOA = oa[0];
-  activeOAParams = oaparams[0];
+  //activeOAFactory = oaFactory[0];
+  //activeOAParams = oaParams[0];
   activeConf = conf[0];
   
   setupDisplayer();
   
-  new Thread(new DisplayerThread(d)).start();
+  new Thread(new DisplayerThread(displayer)).start();
  }
 
  public static void main(String[] args) {

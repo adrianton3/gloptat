@@ -22,31 +22,30 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import alg.OA;
+import alg.OAParams;
 import bench.Dispatcher;
 
-import def.Dbo;
-import def.Fasten;
 import def.MainGeneric;
 
 class ActBenchmarkMT implements ActionListener {
  MainGeneric outer;
  Dispatcher dispatcher;
- final int ntrials = 20;
+ final int trialsPerThread = 10;
+ final int nThreads = 8;
  
  ActBenchmarkMT(MainGeneric outer) {
   this.outer = outer;
  }
  
  public void actionPerformed(ActionEvent e) {
- 	outer.activeOAParams = outer.getOAParams();
-  outer.activeOA.setParams(outer.activeOAParams);
+	 OAParams oaParams = outer.getOAParams();
   
   outer.con.add("Optimizing " + outer.of.getFunc().toString() + "\n" +
-                //"Iterations: " + gaspar.niter + "\n" +
-                "Using: " + outer.activeOA.getNam() + "\n" +
-                "Parameters:\n" + outer.activeOAParams.toString());
+                "Using: " + outer.activeOAFactory.getName() + "\n" +
+                "Parameters:\n" + oaParams.toString());
   
-  dispatcher = new Dispatcher(outer,outer.activeOA.getNam(),outer.activeOAParams,outer.of,outer.dom,5);
+  dispatcher = new Dispatcher(outer,outer.activeOAFactory,oaParams,outer.of,nThreads,trialsPerThread);
   dispatcher.dispatch();
  }
 }

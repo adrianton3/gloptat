@@ -17,21 +17,35 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package gui;
+package alg;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.NoSuchElementException;
 
-import def.MainGeneric;
+public class SimResultsIterator implements Iterator<Snapshot> {
+	private ArrayList<Snapshot> simulation;
+	private int currentPosition;
 
-class ActConf implements ActionListener {
- MainGeneric outer;
- 
- ActConf(MainGeneric outer) {
-  this.outer = outer;
- }
- 
- public void actionPerformed(ActionEvent e) {
-  outer.activeConf.setVisible();
- }
+	public SimResultsIterator(ArrayList<Snapshot> simulation) {
+		this.simulation = simulation;
+		currentPosition = 0;
+	}
+
+	public boolean hasNext() {
+		return currentPosition < simulation.size();
+	}
+
+	public Snapshot next() {
+		if(hasNext()) {
+			Snapshot snapshot = simulation.get(currentPosition);
+			currentPosition++;
+			return snapshot;
+		} 
+		else throw new NoSuchElementException();
+	}
+
+	public void remove() {
+		throw new UnsupportedOperationException();
+	}
 }

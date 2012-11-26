@@ -19,34 +19,41 @@
 
 package bench;
 
+import objfun.ObjectiveFunction;
 import def.Dbo;
+import def.OAFactory;
 import alg.OA;
+import alg.OAParams;
 import alg.SimResult;
+import alg.SimResults;
 
 public class GOThread implements Runnable {
- final Dispatcher outer;
- final int idnr;
- final OA oa;
- final int nTrials;
+	final Dispatcher outer;
+	final int idnr;
+	final OAFactory oaFactory;
+	final ObjectiveFunction of;
+	final OAParams oaParams;
+	final int nTrials;
 
- GOThread(Dispatcher outer, int idnr, OA oa, int ntrials) {
-  this.outer = outer;
-  this.idnr = idnr;
-  this.oa = oa; //oa needs to be instantiated every time and should not be passed as a parameter
-  //instead pass a factory class for the specific oa
-  this.nTrials = ntrials;
- }
+	GOThread(Dispatcher outer, int idnr, OAFactory oaFactory,
+			ObjectiveFunction of, OAParams oaParams, int nTrials) {
+		this.outer = outer;
+		this.idnr = idnr;
+		this.oaFactory = oaFactory;
+		this.of = of;
+		this.oaParams = oaParams;
+		this.nTrials = nTrials;
+	}
 
- public void run() {
-  SimResult[] rez = new SimResult[nTrials];
-  int i;
-  for(i=0;i<nTrials;i++) {
-   oa.resetNapel();
-   oa.randomize();
-   oa.alg();
-   rez[i] = new SimResult(oa.getBestFit());
-  }
+	public void run() {
+		SimResult[] rez = new SimResult[nTrials];
 
-  outer.inc(idnr, rez);
- } 
+		for(int i = 0; i < nTrials; i++) {
+			OA oa = oaFactory.getOA(of, oaParams);
+			SimResults simResults = oa.alg();
+			rez[i] = new SimResult(simResults.getBestFit()); //temporary adaptation
+		}
+
+		outer.addResultSet(idnr, rez);
+	}
 }

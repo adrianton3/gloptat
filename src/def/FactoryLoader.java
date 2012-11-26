@@ -20,96 +20,54 @@
 package def;
 
 import java.io.File;
-import java.io.FilenameFilter;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Iterator;
+import java.util.ServiceLoader;
 
 public class FactoryLoader {
-	private static File[] getFiles(String path) {
-		File folder = new File(path);
-		FilenameFilter filenameFilter = new FilenameFilter() {
-   public boolean accept(File dir, String name) {
-       return name.toLowerCase().endsWith(".jar");
-   }
-  };
-		File[] listOfFiles = folder.listFiles(filenameFilter);
-		
-		return listOfFiles;
+	private static class MyURLClassLoader extends URLClassLoader {
+		public MyURLClassLoader() {
+			super(new URL[] {});
+		}
+
+		public void addURL(URL url) {
+			super.addURL(url);
+		}
 	}
-
-	private static URL[] getURLs(File[] file) throws MalformedURLException { // no .map in Java :(
-		URL[] url = new URL[file.length];
-
-		for (int i = 0; i < file.length; i++)
-			url[i] = file[i].toURI().toURL();
-
-		return url;
-	}
-
-	private static Factory getFactory(String className, URLClassLoader classLoader) throws FactoryException {
-		Factory factory = null;
+	
+	private static ClassLoader addDirToClasspath(File dir) {
+		MyURLClassLoader classLoader = new MyURLClassLoader();
 		
 		try {
-			Class<?> classToLoad = Class.forName(className, true, classLoader); //failure to find desired class
-			Object instance = classToLoad.newInstance(); //failure to instantiate
-			factory = (Factory) instance; //this also may throw some important stuff
+			if(dir.exists())
+				for(File file : dir.listFiles())
+					if(file.getName().endsWith(".jar"))
+						classLoader.addURL(file.toURI().toURL());
+		} catch(MalformedURLException e) {
+			Dbo.out("You shall never see this");
 		}
-		catch(ClassNotFoundException e) {
-  	throw new FactoryException("Class Not Found: " + className, e);
-  }
-		catch(InstantiationException e) {
-			throw new FactoryException("Instantiation: " + className, e);
-		}
-		catch(ClassCastException e) {
-			throw new FactoryException("ClassCast: " + className, e);
-		}
-		catch(IllegalAccessException e) {
-			throw new FactoryException("Illegal Access: " + className, e);
-		}
-		
-		return factory;
-	}
-	
-	private static ArrayList<Factory> getFactories(URL[] url) {
-		ArrayList<Factory> factory = new ArrayList<Factory>(); //factory really needs to be renamed
-		
-		URLClassLoader childClassLoader = new URLClassLoader(url);
-	
-		//factory.add(new RandomSearchFactory());
-		
-		for (int i = 0; i < url.length; i++) {
-			String className = "def." + "GA" + "Factory"; //replace "def" with some other nicer name?
-			
-			try {
-	   factory.add(getFactory(className, childClassLoader));
-			}
-	  catch(FactoryException e) {
-	  	Dbo.err("Caught a FactoryException:\n" + e.message + "\n Will possibly revert to default factory set");
-	  }
-		}
-		
-		return factory;
+
+		return classLoader;
 	}
 
-	static HashMap<String, Factory> LoadFactories(String path) {
-  HashMap<String, Factory> map = new HashMap<String, Factory>();
-  
-  URL[] url = null;
-  try {
-   url = getURLs(getFiles(path));
-  }
-  catch(MalformedURLException e) {
-   Dbo.err("You will never see this message");
-  }
-  
-  ArrayList<Factory> factory = getFactories(url);
-  
-  for(Factory f: factory)
-  	map.put(f.getName(), f);
-  
-  return map;
+	private static <T> Iterator<T> initServiceLoader(ClassLoader cl, Class<T> clazz) {
+		return ServiceLoader.load(clazz, cl).iterator();
+	}
+
+	public static <T> ArrayList<T> getFactories(String dir, Class<T> clazz) {
+		ClassLoader cl = addDirToClasspath(new File(dir));
+		Iterator<T> iterator = initServiceLoader(cl, clazz);
+		ArrayList<T> instance = new ArrayList<T>();
+
+		if(!iterator.hasNext())
+			Dbo.out("Reverting to default OAs");
+
+		while(iterator.hasNext())
+			instance.add(iterator.next());
+
+		return instance;
 	}
 }

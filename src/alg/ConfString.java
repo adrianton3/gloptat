@@ -27,61 +27,60 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Scanner;
 
-import def.Dbo;
-
 public class ConfString {
- String s;
- 
- public ConfString(String s) {
-  this.s = s;
- }
- 
- public HashMap<String,Double> toMap() {
-  HashMap<String,Double> ret = new HashMap<String,Double>();
-  
-  String[] tmp = s.split("\n");
-  for(String s: tmp) {
-   s += ";";
-   s = s.substring(0,s.indexOf(';'));
-   
-   int pe = s.indexOf(':');
-   if(pe > -1) {
-    String key, val;
-    key = s.substring(0,pe).trim();
-    val = s.substring(pe+1).trim();
-    
-    try {
-     double tmpv = Double.parseDouble(val);
-     ret.put(key, tmpv);
-    } catch (NumberFormatException e) {
-    	double tmpv = 0;
-    	if(val.equals("true")) tmpv = 1;
-    	ret.put(key, tmpv);
-    }
-   }
-  }
-  return ret;
- }
- 
- public void toFile(String fnam) {
-  FileWriter fstream;
-  try {
-   fstream = new FileWriter(fnam);
-   BufferedWriter out = new BufferedWriter(fstream);
-   out.write(s);
-  } 
-  catch (IOException e) {
-   e.printStackTrace();
-  }
- }
- 
- public static ConfString fromFile(String fnam) {
-  try {
-   return new ConfString(new Scanner(new File(fnam),"UTF-8").useDelimiter("\\A").next());
-  } 
-  catch (FileNotFoundException e) {
-   e.printStackTrace();
-   return null;
-  }
- }
+	final String s;
+
+	public ConfString(String s) {
+		this.s = s;
+	}
+
+	public HashMap<String, Double> toMap() {
+		HashMap<String, Double> ret = new HashMap<String, Double>();
+
+		String[] tmp = s.split("\n");
+		for(String s : tmp) {
+			s += ";";
+			s = s.substring(0, s.indexOf(';'));
+
+			int pe = s.indexOf(':');
+			if(pe > -1) {
+				String key, val;
+				key = s.substring(0, pe).trim();
+				val = s.substring(pe + 1).trim();
+
+				try {
+					double tmpv = Double.parseDouble(val);
+					ret.put(key, tmpv);
+				} catch(NumberFormatException e) {
+					double tmpv = 0;
+					if(val.equals("true"))
+						tmpv = 1;
+					ret.put(key, tmpv);
+				}
+			}
+		}
+		return ret;
+	}
+
+	public void toFile(String fnam) {
+		FileWriter fstream;
+		try {
+			fstream = new FileWriter(fnam);
+			BufferedWriter out = new BufferedWriter(fstream);
+			out.write(s);
+			out.close();
+		} catch(IOException e) {
+			e.printStackTrace();
+		}
+	}
+
+	public static ConfString fromFile(String fnam) {
+		try {
+			return new ConfString(new Scanner(new File(fnam), "UTF-8").useDelimiter(
+					"\\A").next());
+		} catch(FileNotFoundException e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
 }

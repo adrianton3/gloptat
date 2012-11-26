@@ -22,49 +22,52 @@ package gui;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import alg.OA;
+import alg.OAParams;
+import alg.SimResult;
+import alg.SimResults;
+
 import def.Fasten;
 import def.MainGeneric;
 
 class ActBenchmarkLight implements ActionListener {
- MainGeneric outer;
- final int ntrials = 20;
- 
- ActBenchmarkLight(MainGeneric outer) {
-  this.outer = outer;
- }
- 
- public void actionPerformed(ActionEvent e) {
- 	outer.activeOAParams = outer.getOAParams();
-  outer.activeOA.setParams(outer.activeOAParams);
-  
-  outer.con.add("Optimizing " + outer.of.getFunc().toString() + "\n" +
-                //"Iterations: " + gaspar.niter + "\n" +
-                "Using: " + outer.activeOA.getNam() + "\n" +
-                "Parameters:\n" + outer.activeOAParams.toString());
+	MainGeneric outer;
+	final int ntrials = 20;
 
-  double[] rez = new double[ntrials];
-  int i;
-  for(i=0;i<ntrials;i++) {
-   outer.activeOA.resetNapel();
-   outer.activeOA.randomize();
-   outer.activeOA.alg();
-   rez[i] = outer.activeOA.getBestFit();
-  }
+	ActBenchmarkLight(MainGeneric outer) {
+		this.outer = outer;
+	}
 
-  outer.con.add("Running "+ntrials+" instances...");
-  for(i=0;i<ntrials;i++)
-   outer.con.add(i+": "+Fasten.round(rez[i],2));
+	public void actionPerformed(ActionEvent e) {
+		OAParams oaParams = outer.getOAParams();
 
-  double min, max, avg;
+		outer.con.add("Optimizing " + outer.of.getFunc().toString() + "\n"
+				+ "Using: " + outer.activeOAFactory.getName() + "\n" + "Parameters:\n"
+				+ oaParams.toString());
 
-  max = Fasten.round(Fasten.max(rez),2);
-  min = Fasten.round(Fasten.min(rez),2);
-  avg = Fasten.round(Fasten.avg(rez),2);
+		double[] rez = new double[ntrials];
+		int i;
+		for(i = 0; i < ntrials; i++) {
+			OA oa = outer.getOA(oaParams);
+			oa.alg();
+			SimResults simResults = oa.alg();
+			rez[i] = simResults.getBestFit(); // temporary adaptation
+		}
 
-  outer.con.add("Maximum: " + max);
-  outer.con.add("Minimum: " + min);
-  outer.con.add("Average: " + avg);
-  
-  outer.con.separator();
- }
+		outer.con.add("Running " + ntrials + " instances...");
+		for(i = 0; i < ntrials; i++)
+			outer.con.add(i + ": " + Fasten.round(rez[i], 2));
+
+		double min, max, avg;
+
+		max = Fasten.round(Fasten.max(rez), 2);
+		min = Fasten.round(Fasten.min(rez), 2);
+		avg = Fasten.round(Fasten.avg(rez), 2);
+
+		outer.con.add("Maximum: " + max);
+		outer.con.add("Minimum: " + min);
+		outer.con.add("Average: " + avg);
+
+		outer.con.separator();
+	}
 }

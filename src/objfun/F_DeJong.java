@@ -21,17 +21,18 @@ package objfun;
 
 class F_DeJong extends WOF {
  F_DeJong() {
- 	dom = Domain.fromInterval(new Interval(-5.12,5.12),2);
+ 	dom = Domain.fromInterval(new Interval(-5.12,5.12), 2);
  }
 
  public String toString() { return "DeJong"; }
  
  double f(double[] inp) {
   double tmp = 0;
-  int i;
-  for(i=0;i<inp.length;i++) {
+  
+  for(int i=0;i<inp.length;i++) {
   	tmp += inp[i]*inp[i];
   }
+  
  	return -tmp;
  }
 }

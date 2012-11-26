@@ -21,26 +21,25 @@ package gui;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Timer;
 
 import alg.OA;
+import alg.SimResults;
 
 import def.MainVis;
 
-class ActInit implements ActionListener
-{
- MainVis outer;
- 
- ActInit(MainVis outer)
- {
-  this.outer = outer;
- }
- 
- public void actionPerformed(ActionEvent e) 
- {
-  outer.activeOA.setParams(outer.activeOAParams);
-  //outer.activeOA.init();
-  outer.d.pointers(outer.activeOA.getPop());
-  outer.d.needsrepaint = true;
- }
+class ActInit implements ActionListener {
+	MainVis outer;
+
+	ActInit(MainVis outer) {
+		this.outer = outer;
+	}
+
+	public void actionPerformed(ActionEvent e) {
+		OA oa = outer.getOA(outer.getOAParams());
+		SimResults simResults = oa.alg();
+		outer.iterator = simResults.iterator();
+
+		outer.displayer.pointers(outer.iterator.next().getPop());
+		outer.displayer.needsRepaint();
+	}
 }

@@ -19,15 +19,9 @@
 
 package objfun;
 
-public abstract class WOF //wrapped objective function
+public abstract class WOF
 {
- public Domain dom;
- double p1, p2;
-
- void setParams(double p1, double p2) {
-  this.p1 = p1; 
-  this.p2 = p2;
- }
-
+ protected Domain dom;
+ public Domain getDom() { return dom; }
  abstract double f(double[] inp);
 }

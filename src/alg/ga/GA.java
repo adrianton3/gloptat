@@ -19,55 +19,51 @@
 
 package alg.ga;
 
+import java.util.ArrayList;
+
 import objfun.Domain;
 import objfun.ObjectiveFunction;
 import alg.OA;
 import alg.OAParams;
 import alg.SimParams;
+import alg.SimResults;
+import alg.Snapshot;
 /* lots of work here:
  * + need to parametrize everything
  */
-public class GA implements OA
-{
- public final static String nam = "Genetic Algorithm";
- private GAParams par = new GAParams(); //final
+public class GA implements OA {
+ public final static String name = "Genetic Algorithm";
+ private final ObjectiveFunction of;
+ private final GAParams par;
+ private final Domain dom;
+ 
  private Individual[] gv;
  private Individual[] gn;
  private double[] fit;
- private Domain dom; //final
- private ObjectiveFunction ifit; //final
- private int nactive;
+ private int nactive; //will probably disappear
  private double genn;
-//------------------------------------------------------------------------------
- public GA(ObjectiveFunction iifit)
- {
-  ifit = iifit;
+
+ public GA(ObjectiveFunction of, GAParams par) {
+  this.of = of;
+  this.par = par;
+  this.dom = of.getDom();
+  
+  alloc();
+  randomize();
  }
-//------------------------------------------------------------------------------
- private void alloc()
- {
+
+ private void alloc() {
   gv = new Individual[par.niv];
   gn = new Individual[par.niv];
   fit = new double[par.niv];
  }
-//------------------------------------------------------------------------------
- public void setDom(Domain dom) {
-  this.dom = dom;
- }
-//------------------------------------------------------------------------------
- public void setParams(OAParams ipar)
- {
-  par = (GAParams)ipar;
-  alloc();
-  randomize();
- }
-//------------------------------------------------------------------------------
- public void init() {
+
+ private void init() {
   genn = par.mutation_start;
   nactive = par.niv;
  }
-//------------------------------------------------------------------------------
- public void randomize() {
+
+ private void randomize() {
   init();
 
   int i;
@@ -77,26 +73,25 @@ public class GA implements OA
   } //?
   calcFit();
  }
-//------------------------------------------------------------------------------
- public void setPop(double[][] ipop) {
-  par.niv = ipop.length;
-  alloc();
-  int i;
-  for(i=0;i<par.niv;i++) {
-   gv[i] = new Individual(dom);
-   gv[i].fromArray(ipop[i]);
-  }
- }
-//------------------------------------------------------------------------------
- public double[][] getPop() {
+
+	private double[] getFit() {
+		double[] ret = new double[par.niv];
+		
+		for(int i = 0; i < par.niv; i++)
+			ret[i] = fit[i];
+		
+		return ret;
+	}
+
+ private double[][] getPop() {
   double[][] ret = new double[par.niv][];
   int i;
   for(i=0;i<par.niv;i++)
    ret[i] = gv[i].toArray();
   return ret;
  }
-//------------------------------------------------------------------------------
- public boolean[] getActive()
+
+ private boolean[] getActive()
  {
   boolean[] ret = new boolean[par.niv];
   int i;
@@ -104,30 +99,22 @@ public class GA implements OA
    ret[i] = gv[i].active;
   return ret;
  }
-//------------------------------------------------------------------------------
- public double getBestFit()
+
+ private double getBestFit()
  {
   int i;
   double ret = fit[0];
   for(i=1;i<par.niv;i++) if(fit[i] > ret) ret = fit[i];
   return ret;
  }
-//------------------------------------------------------------------------------
- public double getMeanFit()
- {
-  double acc = 0;
-  int i, nact = 0;
-  for(i=0;i<par.niv;i++) if(gv[i].active) { acc += fit[i]; nact++; }
-  return acc/(double)nact;
- }
-//------------------------------------------------------------------------------
- public double[] getBestForce()
+
+ private double[] getBestForce()
  {
   calcFit();
   return getBest();
  }
-//------------------------------------------------------------------------------
- public double[] getBest()
+
+ private double[] getBest()
  {
   int i, besti;
   double ret;
@@ -135,7 +122,7 @@ public class GA implements OA
   for(i=1;i<par.niv;i++) if(fit[i] > ret) { ret = fit[i]; besti = i; }
   return gv[besti].toArray();
  }
-//------------------------------------------------------------------------------
+
  private int getBestI()
  {
   int i, besti;
@@ -149,34 +136,25 @@ public class GA implements OA
    if(gv[i].active) if(fit[i] > ret) { ret = fit[i]; besti = i; } 
   return besti;
  }
-//------------------------------------------------------------------------------
- public int getNapel()
- {
-  return ifit.getNCalls();
- }
-//------------------------------------------------------------------------------
- public void resetNapel() {
-  ifit.resetNCalls();
- }
-//------------------------------------------------------------------------------
+
  private void calcFit(int i)
  {
   if(gv[i].active)
-   fit[i] = ifit.f(gv[i].toArray());
+   fit[i] = of.f(gv[i].toArray());
  }
-//------------------------------------------------------------------------------
- public void calcFit()
+
+ private void calcFit()
  {
   int i;
   for(i=0;i<par.niv;i++)
    calcFit(i);
  }
-//------------------------------------------------------------------------------
+
  private void elitism() //this should be given as a parameter
  {
   gn[0] = gv[getBestI()];//.copy();
  }
-//------------------------------------------------------------------------------
+
  private int select_tournament(double p) //this should be given as a parameter
  {
   int nsel = (int)(p*par.niv);
@@ -198,7 +176,7 @@ public class GA implements OA
 
   return ret;
  }
-//------------------------------------------------------------------------------
+
  private double[] procFit()
  {
   double[] afit = new double[par.niv];
@@ -227,7 +205,7 @@ public class GA implements OA
 
   return afit;
  }
-//------------------------------------------------------------------------------
+
  private int select_roulette() //this should be given as a parameter
  {
   int i;
@@ -249,7 +227,7 @@ public class GA implements OA
   
   return -1;
  }
-//------------------------------------------------------------------------------
+
  private int select() //this shouldn't exist
  {
   switch(par.selection_type)
@@ -259,7 +237,7 @@ public class GA implements OA
   }
   return -1;
  }
-//------------------------------------------------------------------------------
+
  private boolean[] markLast(int n)
  {
   boolean[] mark = new boolean[par.niv];
@@ -278,7 +256,7 @@ public class GA implements OA
 
   return mark;
  }
-//------------------------------------------------------------------------------
+
  private void renew() //this should be given as a parameter
  {
   boolean[] mark = markLast(par.nnew);
@@ -290,7 +268,7 @@ public class GA implements OA
     calcFit(i);
    }
  }
-//------------------------------------------------------------------------------
+
  private void drop() //this should be given as a parameter
  {
   if(nactive > par.popmin)
@@ -303,7 +281,7 @@ public class GA implements OA
      gv[i].active = false;
   }
  }
-//------------------------------------------------------------------------------
+
  private void invert() //this should be given as a parameter
  {
   boolean[] mark = markLast(par.ndrop);
@@ -315,7 +293,7 @@ public class GA implements OA
     calcFit(i);
    }
  }
-//------------------------------------------------------------------------------
+
  private Individual crossover(int i1, int i2)
  {
   if(Math.random() < par.crossover_bias)
@@ -355,12 +333,12 @@ public class GA implements OA
   }
   return null;
  }
-//------------------------------------------------------------------------------
+
  private void grow(int i) //this should be given as a parameter
  {
-  fit[i] = ifit.f(gn[i].toArray());
+  fit[i] = of.f(gn[i].toArray());
   Individual iv = mutate(i);
-  double ivf = ifit.f(iv.toArray());
+  double ivf = of.f(iv.toArray());
   
   if(ivf > fit[i])
   {
@@ -368,7 +346,7 @@ public class GA implements OA
    fit[i] = ivf;
   }
  }
-//------------------------------------------------------------------------------
+
  private Individual mutate(int i) //this should be given as a parameter
  {
   switch(par.mutation_type)
@@ -378,7 +356,7 @@ public class GA implements OA
   }
   return null;
  }
-//------------------------------------------------------------------------------
+
  public void step()
  {
   int i;
@@ -413,38 +391,24 @@ public class GA implements OA
 
   genn += par.mutation_inc;
  }
-//------------------------------------------------------------------------------
- public void alg()
- {
-  int i;
-  i = 0;
-  init();
-  while(getBestFit() < par.target && i < par.ngen)
-  {
-   step();
-   i++;
-  }
- }
-//------------------------------------------------------------------------------
- public String fitToString()
- {
-  String ret = ""; int i;
-  for(i=0;i<par.niv;i++)
-   ret += i+": " + (((int)(fit[i]*1000))/1000d) + ", ";
-  return ret;
- }
-//------------------------------------------------------------------------------
- public String toString()
- {
-  String ret = ""; int i;
-  for(i=0;i<par.niv;i++)
-   ret += gn[i].toString() + ";";
-  return ret;
- }
- @Override
-//------------------------------------------------------------------------------
- public String getNam() 
- {
-  return nam;
+ 
+	public SimResults alg() {
+		ArrayList<Snapshot> sr = new ArrayList<Snapshot>();
+		
+		int i = 0;
+		init();
+		while(/*getBestFit() < par.target && */i < par.ngen) {
+			Snapshot snapshot = new Snapshot(getPop(), getFit(), of.getNCalls());
+			sr.add(snapshot);
+
+			step();
+			i++;
+		}
+
+		return new SimResults(sr);
+	}
+
+ public String getName() {
+  return name;
  }
 }

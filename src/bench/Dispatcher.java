@@ -19,67 +19,68 @@
 
 package bench;
 
-import def.Dbo;
-import def.MainBench;
-import def.MainGeneric;
-import def.OAFactory;
-import objfun.Domain;
-import objfun.MOF;
+import objfun.ObjectiveFunction;
 import alg.OAParams;
 import alg.SimResult;
+import def.MainGeneric;
+import def.OAFactory;
 
 public class Dispatcher {
 	final MainGeneric outer;
-	final String oanam;
- final OAParams oaparams;
- final MOF of;
- final Domain dom;
- final int nThreads = 8;
- final int trialsPerThread;
- 
- int threads_res = 0;
- 
- SimResult sr[];
- 
- public Dispatcher(MainGeneric outer, String oanam, OAParams oaparams, MOF of, Domain dom, int trialsperthread) {
-  this.outer = outer;
-  this.oanam = oanam;
-  this.oaparams = oaparams;
-  this.of = of;
-  this.dom = dom;
-  this.trialsPerThread = trialsperthread;
- }
- 
- synchronized void inc(int idnr, SimResult[] sr) {
- 	int i;
-  for(i=0;i<sr.length;i++) {
-   this.sr[trialsPerThread*idnr + i] = sr[i];
-  }
-	 
-	 threads_res++;
-  if(threads_res >= nThreads) notify();
- }
- 
- public void dispatch() {
-	sr = new SimResult[trialsPerThread*nThreads]; 
-	
- int i;
- for(i=0;i<nThreads;i++) {
-  new Thread(new GOThread(this,i,OAFactory.get(oanam,oaparams,of,dom),trialsPerThread)).start();
- }
-  
- synchronized (this) {
-  try {
-   wait();
-  } catch (InterruptedException e) { e.printStackTrace(); }
- }
-  
-  publishResults(sr);
- }
+	final OAFactory oaFactory;
+	final OAParams oaParams;
+	final ObjectiveFunction of;
+	final int nThreads;
+	final int trialsPerThread;
+
+	int threadsResponses = 0;
+	SimResult[] sr;
+
+	public Dispatcher(MainGeneric outer, OAFactory oaFactory, OAParams oaparams,
+			ObjectiveFunction of, int nThreads, int trialsPerThread) {
+		this.outer = outer;
+		this.oaFactory = oaFactory;
+		this.oaParams = oaparams;
+		this.of = of;
+		this.nThreads = nThreads;
+		this.trialsPerThread = trialsPerThread;
+	}
+
+	synchronized void addResultSet(int idnr, SimResult[] sr) {
+		int i;
+		for(i = 0; i < sr.length; i++) {
+			this.sr[trialsPerThread * idnr + i] = sr[i];
+		}
+
+		threadsResponses++;
+		if(threadsResponses >= nThreads)
+			notify();
+	}
+
+	public void dispatch() {
+		sr = new SimResult[trialsPerThread * nThreads];
+
+		int i;
+		for(i = 0; i < nThreads; i++) {
+			new Thread(
+					new GOThread(this, i, oaFactory, of, oaParams, trialsPerThread))
+					.start();
+		}
+
+		synchronized(this) {
+			try {
+				wait();
+			} catch(InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
+		publishResults(sr);
+	}
 
 	private void publishResults(SimResult[] sr) {
-		for(SimResult s: sr)
-	  outer.con.add(s.toString());
+		for(SimResult s : sr)
+			outer.con.add(s.toString());
 		outer.con.separator();
 	}
 }

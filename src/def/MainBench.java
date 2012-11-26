@@ -36,17 +36,14 @@ import alg.pso.PSO;
 import alg.pso.PSOParams;
 
 public class MainBench extends MainGeneric {
- String oanam = "GA";
  
  void setupOF() {
   of = new MOF();
   of.setFunc(0);
-  of.setDom(dom);
  }
  
  public void changeOF(int id) {
   of.setFunc(id);
-  dom = of.getFunc().dom;
  }
  
  void start() {
@@ -56,22 +53,18 @@ public class MainBench extends MainGeneric {
   
   setupOF();
   
-  oa = new OA[2]; //should be created on demand and run just once
-  oaparams = new OAParams[2];
+  /*
+  oaFactory = new OAFactory[2];
+  oaParams = new OAParams[2];
   conf = new ConfigGUI[2];
   
   setupOA(0,GA.nam);
   setupOA(1,PSO.nam);
   
-  activeOA = oa[0];
-  activeOAParams = oaparams[0];
+  activeOAFactory = oaFactory[0];
+  activeOAParams = oaParams[0];
   activeConf = conf[0];
- }
- 
- public OAParams getOAParams() {
-  HashMap<String,Double> map;
-  map = new ConfString(activeConf.getString()).toMap();
-  return OAFactory.getParams(oanam, map);
+  */
  }
     
  public static void main(String[] args) {

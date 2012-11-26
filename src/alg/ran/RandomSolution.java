@@ -17,14 +17,17 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package def;
+package alg.ran;
 
-public class FactoryException extends Exception {
-	final String message;
- final Exception exception;
- 
-	FactoryException(String message, Exception exception) {
-  this.message= message;
-  this.exception = exception;
+import objfun.Domain;
+
+public class RandomSolution {
+ final double[] pos;
+	
+ RandomSolution(Domain dom) {
+ 	pos = new double[dom.nDim];
+ 	
+ 	for(int i=0;i<dom.nDim;i++)
+ 		pos[i] = Math.random() * (dom.d[i].r - dom.d[i].r) + dom.d[i].l;
  }
 }

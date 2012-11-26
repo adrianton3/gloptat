@@ -23,7 +23,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import def.MainGeneric;
-import def.MainVis;
 
 class ActFun implements ActionListener {
  MainGeneric outer;

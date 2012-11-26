@@ -17,21 +17,30 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package gui;
+package alg;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+public class Snapshot {
+	final double[][] pos;
+	final double[] fit;
+	final int nCalls;
 
-import def.MainGeneric;
+	public Snapshot(double[][] pos, double[] fit, int nCalls) {
+		this.pos = pos;
+		this.fit = fit;
+		this.nCalls = nCalls;
+	}
 
-class ActConf implements ActionListener {
- MainGeneric outer;
- 
- ActConf(MainGeneric outer) {
-  this.outer = outer;
- }
- 
- public void actionPerformed(ActionEvent e) {
-  outer.activeConf.setVisible();
- }
+	public double getBestFit() {
+		double max = fit[0];
+		
+		for(double f: fit)
+			if(f > max)
+				max = f;
+		
+		return max;
+	}
+
+	public double[][] getPop() {
+		return pos;
+	}
 }

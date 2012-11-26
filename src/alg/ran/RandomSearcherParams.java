@@ -17,21 +17,23 @@
  * along with Global Optimization AT. If not, see <http://www.gnu.org/licenses/>.
  */
 
-package gui;
+package alg.ran;
 
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
+import java.util.HashMap;
 
-import def.MainGeneric;
+import alg.OAParams;
 
-class ActConf implements ActionListener {
- MainGeneric outer;
+public class RandomSearcherParams implements OAParams {
+ final int popSize;
+ final int nIter;
  
- ActConf(MainGeneric outer) {
-  this.outer = outer;
- }
+ public RandomSearcherParams(int nIter, int popSize) {
+		this.popSize = popSize;
+		this.nIter = nIter;
+	}
  
- public void actionPerformed(ActionEvent e) {
-  outer.activeConf.setVisible();
+ static RandomSearcherParams fromMap(HashMap<String,Double> map) {
+ 	//...
+ 	return new RandomSearcherParams(20, 30);
  }
 }
