@@ -52,7 +52,8 @@ public class MainVisGUI implements Runnable, MainGenericGUI {
   String[] funNam = {"DeJong","Rastrigin","Michalewicz"};
   cmb_fun = new JComboBox(funNam);
   
-  String[] oaNam = {"GA","PSO"};
+  //TODO: this array needs to be updated after factories have been loaded
+  String[] oaNam = {"GA","PSO","RS"};
   cmb_oa = new JComboBox(oaNam);
   
   but_config = new JButton("Config");

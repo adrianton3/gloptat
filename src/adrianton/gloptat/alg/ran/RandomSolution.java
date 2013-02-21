@@ -22,12 +22,39 @@ package adrianton.gloptat.alg.ran;
 import adrianton.gloptat.objfun.Domain;
 
 public class RandomSolution {
- final double[] pos;
+	final double[] pos;
+
+	RandomSolution(double[] pos) {
+		this.pos = pos;
+	}
+
+	static RandomSolution getRan(Domain dom) {
+		double[] pos = new double[dom.nDim];
+
+		for(int i = 0; i < dom.nDim; i++)
+			pos[i] = Math.random() * (dom.d[i].r - dom.d[i].l) + dom.d[i].l;
+		
+		return new RandomSolution(pos);
+	}
 	
- RandomSolution(Domain dom) {
- 	pos = new double[dom.nDim];
- 	
- 	for(int i=0;i<dom.nDim;i++)
- 		pos[i] = Math.random() * (dom.d[i].r - dom.d[i].r) + dom.d[i].l;
- }
+	RandomSolution nudge(Domain dom) {
+		double[] pos = new double[this.pos.length];
+		
+		for(int i=0;i<pos.length;i++) {
+			boolean nok = true;
+			while(nok) {
+				pos[i] = this.pos[i] + (Math.random()-0.5) * 1.1;
+				nok = dom.d[i].l > pos[i] || dom.d[i].r < pos[i];
+			}
+		}
+		
+		return new RandomSolution(pos);
+	}
+
+	public double[] toArray() {
+		double[] ret = new double[pos.length];
+		for(int i = 0; i < pos.length; i++)
+			ret[i] = pos[i];
+		return ret;
+	}
 }

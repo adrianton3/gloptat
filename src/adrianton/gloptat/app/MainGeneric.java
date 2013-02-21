@@ -26,6 +26,7 @@ import adrianton.gloptat.alg.OA;
 import adrianton.gloptat.alg.OAParams;
 import adrianton.gloptat.alg.ga.GAFactory;
 import adrianton.gloptat.alg.pso.PSOFactory;
+import adrianton.gloptat.alg.ran.RandomSearcherFactory;
 import adrianton.gloptat.app.gui.ConfigGUI;
 import adrianton.gloptat.app.gui.MainGenericGUI;
 import adrianton.gloptat.app.gui.OutputGUI;
@@ -48,8 +49,6 @@ public abstract class MainGeneric {
 	public abstract void changeOF(int tmp);
 
 	public OAParams getOAParams() {
-		if(activeOAFactory == null)  Dbo.out("null");
-		if(activeConf == null)  Dbo.out("null");
 		return activeOAFactory.getOAParams(new ConfString(activeConf.getString()));
 	}
 
@@ -58,8 +57,9 @@ public abstract class MainGeneric {
 	}
 
 	protected void tmpLoadFactories() { // temporary solution
-		oaFactory = new OAFactory[] { new GAFactory(), new PSOFactory() };
+		oaFactory = new OAFactory[] { new GAFactory(), new PSOFactory(), new RandomSearcherFactory() };
 
+		conf = new ConfigGUI[oaFactory.length];
 		for(int i = 0; i < oaFactory.length; i++)
 			conf[i] = new ConfigGUI("Config " + oaFactory[i].getName(), oaFactory[i]
 					.getOAParams(new ConfString("")).toString());
